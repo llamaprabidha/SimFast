@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<head>
+    <title>Google Maps Test</title>
+    <link rel="stylesheet" href="main.css"></style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!--Scrollspy may be unnecessary-->
+    <script src="jquery-scrollspy.js"></script> 
+    <script src="app.js"></script>
+    <script async defer src="http://maps.googleapis.com/maps/api/js?sensor=false&libraries=geometry&callback=initMap"></script>
+
+    <!-- 
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC2aYWqeY3KKaweojM-AgxLx7j6D2IWSHM&callback=initMap"></script> 
+    -->
+</head>
+
+<body>
+    <h1>MAP</h1>
+    <button id="test", onClick="start()">Test</button>
+    <div id="map_container">
+        <div id="map"></div>
+    </div>
+</body>
