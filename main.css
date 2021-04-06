@@ -1,11 +1,11 @@
 #map {
-    height: 900px;
-    width: 1200px;
+  height: 920px;
+  width: 1105px;
 }
 
 body {
-    height: 100%;
-    margin: 0x;
-    padding: 0;
-    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  height: 100%;
+  margin: 0x;
+  padding: 0;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }

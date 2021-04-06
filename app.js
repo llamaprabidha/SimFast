@@ -178,7 +178,7 @@ const removeTrail = () => {
     }
 };
 
-const start = () => animate(locations.PHL, locations.Paris);
+const start = () => animate(locations.PHL, locations.JFK);
 
 // Callback for the Google Maps import
 function initMap() {
