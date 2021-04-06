@@ -1,0 +1,73 @@
+body {
+    background : #212222;
+    margin: 0;
+    
+}
+
+.googlemaps-left {
+    padding:0px; 
+    text-align: left; 
+    background: black; 
+    color: white; 
+
+}
+
+.btnABC {
+    background: yellow;
+    position:absolute;
+    transition: .6s ease;
+    top: 9.5%;
+    left: 1200px;
+    
+}
+
+.btnTime{
+    background : greenyellow;
+    position:absolute;
+    transition: .6s ease;
+    top: 9.5%;
+    left: 1250px;
+    
+}
+
+.btnFixPair{
+    background :lightskyblue;
+    position:absolute;
+    transition: .6s ease;
+    top: 9.5%;
+    left: 1300px;
+}
+
+.btnTic{
+    background:mediumorchid;
+    position:absolute;
+    transition: .6s ease;
+    top: 9.5%;
+    left: 1365px;
+}
+
+
+
+  .button.play {
+    padding:1px;
+    box-sizing: border-box;
+    width: 25px;
+    height: 25px;
+    border-width: 30px 0px 30px 50px;
+    border-color: transparent transparent transparent #202020;
+  }
+
+  
+  
+.navbar {
+    background: white;
+    padding: lem;
+
+
+    .logo {
+        text-decoration: none;
+        font-weight : bold;
+        color :black;
+        font-size : 1.5em;
+    }
+}
