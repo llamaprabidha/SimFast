@@ -1,0 +1,32 @@
+[
+    {
+        "aircraftId": "some flight id",
+        "altitude": 2600,
+        "groundspeed": 110,
+        "origin": {
+            "name": "PHL",
+            "lat": 39.8729,
+            "long": -75.2437
+        },
+        "destination": {
+            "name": "JFK",
+            "lat": 40.6413,
+            "long": -73.7781
+        }
+    },
+    {
+        "aircraftId": "some other flight id",
+        "altitude": 2600,
+        "groundspeed": 110,
+        "origin": {
+            "name": "PHL",
+            "lat": 39.8729,
+            "long": -75.2437
+        },
+        "destination": {
+            "name": "JFK",
+            "lat": 40.6413,
+            "long": -73.7781
+        }
+    }
+]

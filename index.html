@@ -32,6 +32,8 @@
         <button class="button__start" onclick="start();startTimer()">Start</button>
         <button class="button__stop" onclick="stopTimer();pause()">Stop</button>
         <button class="button__restart" onclick="removePlane();resetTimer()">Reset</button>
+        <button class="button__speedup" onclick="(() => simSpeed *= 2)()">Spe+</button>
+        <button class="button__speeddown" onclick="(() => simSpeed /= 2)()">Spe-</button>
     </ul>
     <div id="map_container">
         <div id="map"></div>

@@ -3,6 +3,9 @@ let map,
     animationIndex = 0,
     planePath = false,
     trailPath = false,
+    trailEnabled = true;
+    simSpeed = 1,
+    locations = [],
     planeSvg = {
         path: 'M 50,5 95,97.5 5,97.5 z',
         fillColor: '#f00',
@@ -24,22 +27,6 @@ let map,
         anchor: null,
         strokeWeight: 0,
    };*/
-let locationStart
-let locationEnd
-fetch("./locations.json")
-	.then(function(resp) {
-		return resp.json();
-		})
-	.then(function(data) {
-		locationStart = data.Locations[0]
-		locationEnd = data.Locations[1]
-		
-	});
-// Airports, hardcoded for now
-const locations = {
-    "PHL": { lat: 39.8729, long: -75.2437 }, // Philadelphia
-    "JFK": { lat: 40.6413, long: -73.7781 }, // New York City
-};
 
 // Parameters that control the map
 const params = {
@@ -50,7 +37,7 @@ const params = {
     disableDefaultUI: true,
     streetViewControl: false,
     disableDoubleClickZoom: true,
-    center: { lat: 39.9526+.5, lng: -75.1652+.7 },
+    center: { lat: 40.4526, lng: -74.4652 },
     zoom: 9,
     styles: [{
         "featureType": "administrative",
@@ -125,6 +112,7 @@ const params = {
 const animate = (location1, location2) => {
     removePlane();
     removeTrail();
+
     let start = new google.maps.LatLng(location1.lat, location1.long);
     let end = new google.maps.LatLng(location2.lat, location2.long);
 
@@ -138,28 +126,38 @@ const animate = (location1, location2) => {
             icon: planeSvg,
             offset: '0%'
         }],
+        label: 'test'
     });
 
     trailPath = new google.maps.Polyline({
         path: [start, start],
         strokeColor: '#f00', // ?
-        strokeWeight: 2,
+        strokeWeight: 1.2,
         map: map,
-        geodesic: true
+        geodesic: true,
+        _bak: 1.2 // just a backup for the strokeWeight... probably a terrible implementation
     });
 
     animationLoop = window.requestAnimationFrame(() => tick(start, end));
 };
 
 const tick = (start, end) => {
-    animationIndex += 0.2; // value effectively controls speed
-                           // it can remain a constant and be multiplied by a flight speed value
+    animationIndex += 0.02 * simSpeed; // value effectively controls speed
+                                       // it can remain a constant and be multiplied by a flight speed value
 
     let next = google.maps.geometry.spherical.interpolate(start, end, animationIndex / 100);
  
     planePath.icons[0].offset = Math.min(animationIndex, 100) + '%';
     planePath.setPath(planePath.getPath());
     trailPath.setPath([start, next]);
+    
+    
+    if (!trailEnabled) {
+        trailPath.strokeWeight = 0;
+    } else if (trailPath.strokeWeight == 0) {
+        trailPath.strokeWeight = trailPath._bak;
+    }
+    
 
     map.panTo(next);
 
@@ -168,7 +166,7 @@ const tick = (start, end) => {
         animationIndex = 0;
         removeTrail();
         setTimeout(()=>{}, 700);
-        stopTimer()
+        stopTimer();
     } else {
         animationLoop = window.requestAnimationFrame(() => tick(start, end));
     }
@@ -190,10 +188,17 @@ const removeTrail = () => {
     }
 };
 
-const start = () => animate(locations.PHL, locations.JFK);
+const start = () => animate(locations[0], locations[1]);
 
 // Callback for the Google Maps import
-function initMap() {
+async function initMap() {
     map = new google.maps.Map(document.getElementById("map"), params);
     planeSvg.anchor = new google.maps.Point(planeSvg.ax, planeSvg.ay); // ?
+
+    // Load in locations from JSON
+    await fetch('locations.json')
+        .then(res => res.json())
+        .then(res => res.Locations.forEach(e => {
+            locations.push(e);
+        }));
 }
