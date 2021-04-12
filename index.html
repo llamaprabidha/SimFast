@@ -3,7 +3,7 @@
     <title>SimFast Test</title>
     <style>
         body{
-            background-color: #121212;
+            background-color: #ffffff;
         }
     </style>
     <link rel="stylesheet" href="main.css"></style>
@@ -14,14 +14,25 @@
     <script async defer src="http://maps.googleapis.com/maps/api/js?sensor=false&libraries=geometry&callback=initMap"></script>
     <!--Keyboard Script-->
     <script type="module" src="Keyboard.js" defer></script>
+    <!--Stopwatch Script-->
+    <script src="StopwatchApp.js" defer></script>
     <!-- 
     <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC2aYWqeY3KKaweojM-AgxLx7j6D2IWSHM&callback=initMap"></script> 
     -->
 </head>
 
 <body>
-    <button id="test", onClick="start()">Test</button>
-    <!-- <button id="pause">Pause</button> NOT YET FINISHED BECAUSE I NEED A WORKING MAP -->
+    <!-- Creates stopwatch-->
+    <div class="stopwatch__base" id="stopwatch">
+        00:00:00
+    </div>
+    <!--Test--> <progress id="progress" max="100" value="0">Progress</progress>
+    <!-- Control buttons-->
+    <ul id="buttons", id = "test">
+        <button class="button__start" onclick="start();startTimer()">Start</button>
+        <button class="button__stop" onclick="stopTimer();pause()">Stop</button>
+        <button class="button__restart" onclick="removePlane();resetTimer()">Reset</button>
+    </ul>
     <div id="map_container">
         <div id="map"></div>
     </div> 
@@ -29,3 +40,4 @@
     <!-- creates an input box for keyboard-->
     <input class="use-keyboard-input" style="position: fixed; bottom: 430.5px; right: 16px; width: 759px; height: 25px;"></input>
 </body>
+

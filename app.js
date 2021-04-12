@@ -123,6 +123,8 @@ const params = {
 
 // Call this function to start the animation from location1 to location2
 const animate = (location1, location2) => {
+    removePlane();
+    removeTrail();
     let start = new google.maps.LatLng(location1.lat, location1.long);
     let end = new google.maps.LatLng(location2.lat, location2.long);
 
@@ -166,6 +168,7 @@ const tick = (start, end) => {
         animationIndex = 0;
         removeTrail();
         setTimeout(()=>{}, 700);
+        stopTimer()
     } else {
         animationLoop = window.requestAnimationFrame(() => tick(start, end));
     }
@@ -187,7 +190,7 @@ const removeTrail = () => {
     }
 };
 
-const start = () => animate(locationStart, locationEnd);
+const start = () => animate(locations.PHL, locations.JFK);
 
 // Callback for the Google Maps import
 function initMap() {

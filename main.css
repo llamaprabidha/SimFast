@@ -1,5 +1,16 @@
+/* Overall Style of the Webpage */
+body {
+  background: #121212;
+  display: grid;
+  height: 100vh;
+  width: 100%;
+}
+
+/* Map Style */
 #map {
-  height: 920px;
+  top: 20px;
+  left: 1px;
+  height: 875px;
   width: 1105px;
 }
 
@@ -8,4 +19,180 @@ body {
   margin: 0x;
   padding: 0;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Stopwatch Style */
+.stopwatch__base {
+  position: fixed;
+  top: 15px;
+  left: 174px;
+  height: 20px;
+  width: 64px;
+  height: 30px;
+  border-radius: 6px;
+  padding: 5px 0;
+  background: #ffffff;
+  font-size: 1.05rem;
+  box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
+  user-select: none;
+  transition: bottom 0.4s;
+}
+
+.stopwatch__number {
+  text-align: center;
+}
+
+/* Button Style */
+.button__start {
+  position: fixed;
+  left: 9px;
+  top: 15px;
+  width: 50px;
+  max-width: 40%;
+  height: 40px;
+  border-radius: 6px;
+  padding: 5px 0;
+  background: #ffffff;
+  font-size: 1.05rem;
+  box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
+  user-select: none;
+  transition: bottom 0.4s;
+}
+
+.button__stop {
+  position: fixed;
+  left: 64px;
+  top: 15px;
+  width: 50px;
+  max-width: 40%;
+  height: 40px;
+  border-radius: 6px;
+  padding: 5px 0;
+  background: #ffffff;
+  font-size: 1.05rem;
+  box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
+  user-select: none;
+  transition: bottom 0.4s;
+}
+
+.button__restart {
+  position: fixed;
+  left: 119px;
+  top: 15px;
+  width: 50px;
+  max-width: 40%;
+  height: 40px;
+  border-radius: 6px;
+  padding: 5px 0;
+  background: #ffffff;
+  font-size: 1.05rem;
+  box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
+  user-select: none;
+  transition: bottom 0.4s;
+}
+
+/*Progress Bar */
+progress[value] {
+  left: 250px;
+  top: 25px;
+  border: none;
+  border-radius: 3px;
+  box-shadow: 0 2px 3px #ffffff inset;
+  color: dodgerblue;
+  display: inline;
+  height: 15px;
+  position: fixed;
+  width: 25%;
+}
+
+/*Keyboard Style */
+.keyboard {
+  position: fixed;
+  right: 15px;
+  bottom: 15px;
+  width: 40%;
+  max-width: 40%;
+  padding: 5px 0;
+  background: #202020;
+  box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
+  user-select: none;
+  transition: bottom 0.4s;
+}
+
+.keyboard__keys {
+  text-align: center;
+}
+
+.keyboard__key {
+  height: 39px;
+  max-height: 39px;
+  width: 9.1%;
+  margin: 3px;
+  border-radius: 0px;
+  border: none;
+  background: #444444;
+  color: #ffffffda;
+  font-size: 1.05rem;
+  outline: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  vertical-align: top;
+  padding: 10px;
+  -webkit-tap-highlight-color: transparent;
+  position: relative;
+}
+
+.keyboard__number__key {
+  background: #029658;
+  color: #ffffffda;
+}
+
+.keyboard__utility__key__color {
+  background: #16a085;
+  color: #ffffffda;
+}
+
+.keyboard__enter__key__color {
+  background: #bf3f3f;
+  color: #ffffffda;
+}
+
+.keyboard__control__key__color {
+  background: #8e44ad;
+  color: #ffffffda;
+}
+
+.keyboard__key:active {
+  background: #ffffffda;
+}
+
+.keyboard__key--wide {
+  width: 122px;
+  max-width: 122px;
+}
+
+.keyboard__key--extra-wide {
+  width: 55%;
+  max-width: 55%;
+}
+
+.keyboard__key--activatable::after {
+  content: "";
+  top: 10px;
+  right: 10px;
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 50%;
+}
+
+.keyboard__key--active::after {
+  background: #08ff00;
+}
+
+.keyboard__key--dark {
+  background: rgba(0, 0, 0, 0.25);
 }
