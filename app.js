@@ -24,8 +24,17 @@ let map,
         anchor: null,
         strokeWeight: 0,
    };*/
-
-
+let locationStart
+let locationEnd
+fetch("./locations.json")
+	.then(function(resp) {
+		return resp.json();
+		})
+	.then(function(data) {
+		locationStart = data.Locations[0]
+		locationEnd = data.Locations[1]
+		
+	});
 // Airports, hardcoded for now
 const locations = {
     "PHL": { lat: 39.8729, long: -75.2437 }, // Philadelphia
@@ -178,7 +187,7 @@ const removeTrail = () => {
     }
 };
 
-const start = () => animate(locations.PHL, locations.JFK);
+const start = () => animate(locationStart, locationEnd);
 
 // Callback for the Google Maps import
 function initMap() {
