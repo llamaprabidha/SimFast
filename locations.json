@@ -1,0 +1,6 @@
+{
+"Locations" : [
+	{"locationName": "PHL", "lat": 39.8729, "long": -75.2437 }, // Philadelphia
+    {"locationName": "JFK", "lat": 40.6413, "long": -73.7781 } //New York 
+]
+}
