@@ -19,14 +19,14 @@
         "altitude": 2600,
         "groundspeed": 110,
         "origin": {
+            "name": "MDT", 
+            "lat": 40.1942,
+            "long": -76.7577
+        },
+        "destination": {
             "name": "PHL",
             "lat": 39.8729,
             "long": -75.2437
-        },
-        "destination": {
-            "name": "JFK",
-            "lat": 40.6413,
-            "long": -73.7781
         }
     }
 ]

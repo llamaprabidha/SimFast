@@ -1,11 +1,7 @@
 let map, 
-    animationLoop = false,
-    animationIndex = 0,
-    planePath = false,
-    trailPath = false,
     trailEnabled = true;
     simSpeed = 1,
-    locations = [],
+    flights = [],
     planeSvg = {
         path: 'M 50,5 95,97.5 5,97.5 z',
         fillColor: '#f00',
@@ -109,14 +105,13 @@ const params = {
 };
 
 // Call this function to start the animation from location1 to location2
-const animate = (location1, location2) => {
-    removePlane();
-    removeTrail();
+const animate = (flight) => {
+    // removeTrail();
 
-    let start = new google.maps.LatLng(location1.lat, location1.long);
-    let end = new google.maps.LatLng(location2.lat, location2.long);
+    let start = new google.maps.LatLng(flight.origin.lat, flight.origin.long);
+    let end = new google.maps.LatLng(flight.destination.lat, flight.destination.long);
 
-    planePath = new google.maps.Polyline({
+    flight.planePath = new google.maps.Polyline({
         path: [start, end],
         strokeColor: '#0f0', // ?
         strokeWeight: 0,
@@ -129,21 +124,25 @@ const animate = (location1, location2) => {
         label: 'test'
     });
 
-    trailPath = new google.maps.Polyline({
+    flight.trailPath = new google.maps.Polyline({
         path: [start, start],
         strokeColor: '#f00', // ?
-        strokeWeight: 1.2,
+        strokeWeight: 1,
         map: map,
-        geodesic: true,
-        _bak: 1.2 // just a backup for the strokeWeight... probably a terrible implementation
+        geodesic: true
     });
 
-    animationLoop = window.requestAnimationFrame(() => tick(start, end));
+    console.log('Running flight ' + flight.aircraftId + ' from ' + flight.origin.name + ' to ' + flight.destination.name);
+    console.log('Total distance: ' + (google.maps.geometry.spherical.computeDistanceBetween(start, end) / 1000) + ' km');
+
+    animationLoop = window.requestAnimationFrame(() => tick(start, end, knotsToMps(flight.groundspeed), 
+        flight.planePath, flight.trailPath, flight.animationLoop, flight.animationIndex));
 };
 
-const tick = (start, end) => {
-    animationIndex += 0.02 * simSpeed; // value effectively controls speed
-                                       // it can remain a constant and be multiplied by a flight speed value
+const tick = (start, end, groundspeed, planePath, trailPath, animationLoop, animationIndex) => {
+
+    let distance = google.maps.geometry.spherical.computeDistanceBetween(start, end);
+    animationIndex += groundspeed / distance * simSpeed * 20;
 
     let next = google.maps.geometry.spherical.interpolate(start, end, animationIndex / 100);
  
@@ -153,42 +152,46 @@ const tick = (start, end) => {
     
     
     if (!trailEnabled) {
-        trailPath.strokeWeight = 0;
-    } else if (trailPath.strokeWeight == 0) {
-        trailPath.strokeWeight = trailPath._bak;
+        trailPath.setMap(null);
+    } else if (trailPath.getMap() == null) {
+        trailPath.setMap(map);
     }
-    
 
-    map.panTo(next);
+    // map.panTo(next);
 
     if (animationIndex >= 100) {
         window.cancelAnimationFrame(animationLoop);
         animationIndex = 0;
-        removeTrail();
+        removePlane(planePath, trailPath, animationLoop);
         setTimeout(()=>{}, 700);
         stopTimer();
     } else {
-        animationLoop = window.requestAnimationFrame(() => tick(start, end));
+        animationLoop = window.requestAnimationFrame(() => tick(start, end, groundspeed, planePath, trailPath, animationLoop, animationIndex));
     }
 
 };
 
-const removePlane = () => {
-    removeTrail();
-    if (trailPath) { 
-        planePath.setMap(null); // ?
+const removePlane = (planePath, trailPath, animationLoop) => {
+    removeTrail(trailPath);
+    if (planePath) {
+        planePath.setMap(null);
     }
     window.cancelAnimationFrame(animationLoop);
     animationIndex = 0;
 };
 
-const removeTrail = () => {
-    if (trailPath) { 
-        trailPath.setMap(null); 
+const removeTrail = trailPath => {
+    if (trailPath) {
+        trailPath.setMap(null);
     }
 };
 
-const start = () => animate(locations[0], locations[1]);
+const knotsToMps = knots => knots * 0.514444;
+
+const start = () => { 
+    animate(flights[0]);
+    setTimeout(animate(flights[1]), 10000);
+};
 
 // Callback for the Google Maps import
 async function initMap() {
@@ -196,9 +199,18 @@ async function initMap() {
     planeSvg.anchor = new google.maps.Point(planeSvg.ax, planeSvg.ay); // ?
 
     // Load in locations from JSON
-    await fetch('locations.json')
+    await fetch('flights.json')
         .then(res => res.json())
-        .then(res => res.Locations.forEach(e => {
-            locations.push(e);
-        }));
+        .then(res => {
+            res.forEach(e => {
+                e.planePath = null;
+                e.trailPath = null;
+                e.animationIndex = 0;
+                e.animationLoop = false;
+            });
+            return res;
+        })
+        .then(res => flights = res);
+    
+    console.log(flights);
 }
