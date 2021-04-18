@@ -32,9 +32,9 @@
       </div>
     <!-- Control buttons-->
     <ul id="buttons", id = "test">
-        <button class="button__start" onclick="start();startTimer();move()">&#9654;</button>
-        <button class="button__stop" onclick="stopTimer();pause()">&#9616;&#9616;&#8201;&#8201;</button>
-        <button class="button__restart" onclick="removePlane();resetTimer()">&#8634;</button>
+        <button class="button__start" onclick="play()">&#9654;</button>
+        <button class="button__stop" onclick="stopTimer();pause(true)">&#9616;&#9616;&#8201;&#8201;</button>
+        <button class="button__restart" onclick="reset()">&#8634;</button>
     </ul>
 
     <select id="selectedSpeed" class="button__speedup" onchange="changeSpeed();timerSpeed()">

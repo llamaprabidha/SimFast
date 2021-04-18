@@ -4,6 +4,7 @@ let map,
     simSpeed = 1,
     speedMemory = 0;
     flights = [],
+    activeFlights = [],
     planeSvg = {
         path: 'M 50,5 95,97.5 5,97.5 z',
         fillColor: '#f00',
@@ -108,7 +109,6 @@ const params = {
 
 // Call this function to start the animation from location1 to location2
 const animate = (flight) => {
-    // removeTrail();
 
     let start = new google.maps.LatLng(flight.origin.lat, flight.origin.long);
     let end = new google.maps.LatLng(flight.destination.lat, flight.destination.long);
@@ -134,79 +134,95 @@ const animate = (flight) => {
         geodesic: true
     });
 
+    activeFlights.push(flight);
+
     console.log('Running flight ' + flight.aircraftId + ' from ' + flight.origin.name + ' to ' + flight.destination.name);
     console.log('Total distance: ' + (google.maps.geometry.spherical.computeDistanceBetween(start, end) / 1000) + ' km');
 
-    animationLoop = window.requestAnimationFrame(() => tick(start, end, knotsToMps(flight.groundspeed), 
-        flight.planePath, flight.trailPath, flight.animationLoop, flight.animationIndex));
+    flight.animationLoop = window.requestAnimationFrame(() => tick(start, end, flight));
 };
 
-const tick = (start, end, groundspeed, planePath, trailPath, animationLoop, animationIndex) => {
+const tick = (start, end, flight) => {
 
     let distance = google.maps.geometry.spherical.computeDistanceBetween(start, end);
-    animationIndex += groundspeed / distance * simSpeed * 20;
+    flight.animationIndex += knotsToMps(flight.groundspeed) / distance * simSpeed * 20;
 
-    let next = google.maps.geometry.spherical.interpolate(start, end, animationIndex / 100);
+    let next = google.maps.geometry.spherical.interpolate(start, end, flight.animationIndex / 100);
  
-    planePath.icons[0].offset = Math.min(animationIndex, 100) + '%';
-    planePath.setPath(planePath.getPath());
-    trailPath.setPath([start, next]);
+    flight.planePath.icons[0].offset = Math.min(flight.animationIndex, 100) + '%';
+    flight.planePath.setPath(flight.planePath.getPath());
+    flight.trailPath.setPath([start, next]);
     
     
     if (!trailEnabled) {
-        trailPath.setMap(null);
-    } else if (trailPath.getMap() == null) {
-        trailPath.setMap(map);
+        flight.trailPath.setMap(null);
+    } else if (flight.trailPath.getMap() == null) {
+        flight.trailPath.setMap(map);
     }
 
     // map.panTo(next);
 
-    if (animationIndex >= 100) {
-        window.cancelAnimationFrame(animationLoop);
-        animationIndex = 0;
-        removePlane(planePath, trailPath, animationLoop);
+    if (flight.animationIndex >= 100) {
+        removePlane(flight);
         setTimeout(()=>{}, 700);
-        stopTimer();
+        // stopTimer();
     } else {
-        animationLoop = window.requestAnimationFrame(() => tick(start, end, groundspeed, planePath, trailPath, animationLoop, animationIndex));
+        flight.animationLoop = window.requestAnimationFrame(() => tick(start, end, flight));
     }
 
 };
 
-const removePlane = (planePath, trailPath, animationLoop) => {
-    removeTrail(trailPath);
-    if (planePath) {
-        planePath.setMap(null);
-    }
-    window.cancelAnimationFrame(animationLoop);
-    animationIndex = 0;
-};
+const removePlane = (flight) => {
 
-const removeTrail = trailPath => {
-    if (trailPath) {
-        trailPath.setMap(null);
-    }
+    activeFlights.splice(activeFlights.indexOf(flight), 1);
+
+    flight?.planePath?.setMap(null);
+    flight?.trailPath?.setMap(null);
+
+    window.cancelAnimationFrame(flight.animationLoop);
+    flight.animationIndex = 0;
+
 };
 
 const knotsToMps = knots => knots * 0.514444;
 
-const start = () => { 
-    animate(flights[0]);
-    setTimeout(animate(flights[1]), 10000);
+const play = () => {
+
+    if (activeFlights.length == 0) {
+        // Starting
+        startTimer();
+        // move();
+        animate(flights[0]);
+        setTimeout(animate(flights[1]), 10000);
+        
+    } else {
+        pause(false);
+    }
+   
 };
 
-function pause() {
-    if(pauseState == false){
-        speedMemory = simSpeed;
+function pause(state) {
+
+    if(state){
         simSpeed = 0;
         stopTimer();
         pauseState = true;
     }
     else {
-        simSpeed = speedMemory;
+        changeSpeed();
         startTimer();
         pauseState = false
     }
+    
+}
+
+const reset = () => {
+
+    [...activeFlights].forEach(e => removePlane(e));
+
+    pause(false);
+    resetTimer();
+
 }
 
 function changeSpeed(){
