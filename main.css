@@ -26,12 +26,15 @@ body {
   position: fixed;
   top: 15px;
   left: 174px;
-  height: 20px;
-  width: 64px;
+  width: 70px;
+  max-width: 40%;
   height: 30px;
   border-radius: 6px;
   padding: 5px 0;
-  background: #ffffff;
+  border-color: #ffffffda;
+  background: #bf3f3f;
+  color: #ffffffda;
+  text-align: center;
   font-size: 1.05rem;
   box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
   user-select: none;
@@ -50,10 +53,14 @@ body {
   width: 50px;
   max-width: 40%;
   height: 40px;
-  border-radius: 6px;
+  border-radius: 3px;
+  border-color: #ffffffda;
   padding: 5px 0;
-  background: #ffffff;
-  font-size: 1.05rem;
+  background: #16a085;
+  color: #ffffffda;
+  text-align: center;
+  font-size: 1.5rem;
+  vertical-align: middle;
   box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
   user-select: none;
   transition: bottom 0.4s;
@@ -68,8 +75,11 @@ body {
   height: 40px;
   border-radius: 6px;
   padding: 5px 0;
-  background: #ffffff;
-  font-size: 1.05rem;
+  border-color: #ffffffda;
+  background: #16a085;
+  color: #ffffffda;
+  text-align: center;
+  font-size: 1rem;
   box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
   user-select: none;
   transition: bottom 0.4s;
@@ -84,8 +94,12 @@ body {
   height: 40px;
   border-radius: 6px;
   padding: 5px 0;
-  background: #ffffff;
-  font-size: 1.05rem;
+  border-color: #ffffffda;
+  background: #16a085;
+  color: #ffffffda;
+  text-align: center;
+  font-size: 1.5rem;
+  vertical-align: middle;
   box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
   user-select: none;
   transition: bottom 0.4s;
@@ -93,48 +107,21 @@ body {
 
 .button__speedup {
   position: fixed;
-  left: 674px;
+  left: 750px;
   top: 15px;
-  width: 50px;
+  width: 70px;
   max-width: 40%;
   height: 40px;
   border-radius: 6px;
   padding: 5px 0;
-  background: #ffffff;
+  border-color: #ffffffda;
+  background: #16a085;
+  color: #ffffffda;
+  text-align: center;
   font-size: 1.05rem;
   box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
   user-select: none;
   transition: bottom 0.4s;
-}
-
-.button__speeddown {
-  position: fixed;
-  left: 729px;
-  top: 15px;
-  width: 50px;
-  max-width: 40%;
-  height: 40px;
-  border-radius: 6px;
-  padding: 5px 0;
-  background: #ffffff;
-  font-size: 1.05rem;
-  box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
-  user-select: none;
-  transition: bottom 0.4s;
-}
-
-/*Progress Bar */
-progress[value] {
-  left: 250px;
-  top: 25px;
-  border: none;
-  border-radius: 3px;
-  box-shadow: 0 2px 3px #ffffff inset;
-  color: dodgerblue;
-  display: inline;
-  height: 15px;
-  position: fixed;
-  width: 25%;
 }
 
 /*Keyboard Style */
@@ -227,4 +214,19 @@ progress[value] {
 
 .keyboard__key--dark {
   background: rgba(0, 0, 0, 0.25);
+}
+
+/* Progress bar test*/
+#Progress {
+  left: 255px;
+  top: 19px;
+  background-color: grey;
+  width: 25%;
+  position: fixed;
+}
+
+#Bar {
+  width: 1%;
+  height: 30px;
+  background-color: #029658;
 }

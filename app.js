@@ -1,6 +1,8 @@
 let map, 
     trailEnabled = true;
+    pauseState = false;
     simSpeed = 1,
+    speedMemory = 0;
     flights = [],
     planeSvg = {
         path: 'M 50,5 95,97.5 5,97.5 z',
@@ -192,6 +194,47 @@ const start = () => {
     animate(flights[0]);
     setTimeout(animate(flights[1]), 10000);
 };
+
+function pause() {
+    if(pauseState == false){
+        speedMemory = simSpeed;
+        simSpeed = 0;
+        stopTimer();
+        pauseState = true;
+    }
+    else {
+        simSpeed = speedMemory;
+        startTimer();
+        pauseState = false
+    }
+}
+
+function changeSpeed(){
+    var selectedSpeed = document.getElementById("selectedSpeed").value;
+
+    if (selectedSpeed == 1) {
+        simSpeed = 1;
+    }
+        else if (selectedSpeed == 2) {
+            simSpeed = 2;
+    }
+
+        else if (selectedSpeed == 4) {
+            simSpeed = 4;
+    }
+
+        else if (selectedSpeed == 8) {
+            simSpeed = 8;
+    }
+
+        else if (selectedSpeed == 0.5) {
+            simSpeed = 0.5;
+    }
+
+        else if (selectedSpeed == 0.25) {
+            simSpeed = 0.25;
+    }
+}
 
 // Callback for the Google Maps import
 async function initMap() {

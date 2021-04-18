@@ -3,12 +3,18 @@ const timer = document.getElementById('stopwatch');
 
 var hr = 0;
 var min = 0;
-var sec = 0;
+var sec = -1;
+
 var stoptime = true;
-var playSpeed = 1;
+var playSpeed = 1000;
+var selectedSpeed = 1;
 
 
 function startTimer() {
+
+  if (stoptime == false){
+    resetTimer();
+  }
   if (stoptime == true) {
         stoptime = false;
         timerCycle();
@@ -18,6 +24,39 @@ function stopTimer() {
   if (stoptime == false) {
     stoptime = true;
   }
+}
+
+function timerSpeed(){
+  var selectedSpeed = document.getElementById("selectedSpeed").value;
+  
+   if (selectedSpeed == 1) {
+     playSpeed = 1000;
+     return;
+    }
+      else if (selectedSpeed == 2) {
+        playSpeed = 500;
+        return;
+    }
+
+      else if (selectedSpeed == 4) {
+        playSpeed = 250;
+        return;
+    }
+
+      else if (selectedSpeed == 8) {
+        playSpeed = 125;
+        return;
+     }
+
+      else if (selectedSpeed == 0.5) {
+        playSpeed = 2000;
+        return;
+     }
+
+      else if (selectedSpeed == 0.25) {
+         playSpeed = 4000;
+         return;
+     }
 }
 
 function timerCycle() {
@@ -50,23 +89,38 @@ function timerCycle() {
 
     timer.innerHTML = hr + ':' + min + ':' + sec;
 
-    setTimeout("timerCycle()", 1000);
+    setTimeout("timerCycle()", playSpeed);
   }
 }
 
 function resetTimer() {
-    stopTimer();
+    stoptime = true;
     if (hr > 0 || min > 0 || sec > 0) {
       hr = 0;
       min = 0;
-      sec = 0;
+      sec = -1;
       timer.innerHTML = '00:00:00';
     } 
+}
 
-    function changePlaySpeed(){
-//FINISH 
+//progress bar test
+
+var i = 0;
+
+function move() {
+  if (i == 0) {
+    i = 1;
+    var elem = document.getElementById("Bar");
+    var width = 1;
+    var id = setInterval(frame, 1);
+    function frame() {
+      if (width >= 100) {
+        clearInterval(id);
+        i = 0;
+      } else {
+        width++;
+        elem.style.width = width + "%";
+      }
     }
-
-const progress = document.getElementById( "progress" );
-
+  }
 }
