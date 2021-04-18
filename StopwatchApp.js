@@ -11,10 +11,7 @@ var selectedSpeed = 1;
 
 
 function startTimer() {
-
-  if (stoptime == false){
-    resetTimer();
-  }
+  
   if (stoptime == true) {
         stoptime = false;
         timerCycle();
