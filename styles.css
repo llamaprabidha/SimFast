@@ -1,0 +1,17 @@
+.container {
+  display: flex;
+}
+
+.content-block {
+  display: flex;
+  flex-direction: column;
+  padding: 25px 10px;
+}
+
+#image-container {
+  width: 500px;
+}
+
+img {
+  width: 100%;
+}
