@@ -1,5 +1,14 @@
 .container {
-  display: flex;
+  position: fixed;
+  left: 1150px;
+  top: 20px;
+  width: 300px;
+  max-width: 40%;
+  height: 40px;
+  border-radius: 10px;
+  padding: 8px 0;
+  
+  
 }
 
 .content-block {
@@ -13,5 +22,5 @@
 }
 
 img {
-  width: 100%;
+  width: 105%;
 }
