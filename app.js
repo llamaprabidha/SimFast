@@ -1,20 +1,20 @@
 let map, 
-    trailEnabled = true;
-    pauseState = false;
+    trailEnabled = false,
+    pauseState = false,
     simSpeed = 1,
-    speedMemory = 0;
     flights = [],
     activeFlights = [],
     planeSvg = {
-        path: 'M 50,5 95,97.5 5,97.5 z',
-        fillColor: '#f00',
+        // path: 'M 50,5 95,97.5 5,97.5 z',
+        fillColor: '#fff',
         fillOpacity: 1.5,
         strokeWeight: 0,
-        scale: 0.2,
+        scale: 0.15,
         anchor: null, // google.maps isn't imported yet, so this can't be set yet
         ax: 50, // x value to set the anchor to later
         ay: 20, // y value to set the anchor to later
-    };
+    },
+    Popup;
    /*
     // This is an actual plane icon from the original code I was using
     // anchor needs to be set to new google.maps.Point(11, 11) in initMap()
@@ -29,86 +29,252 @@ let map,
 
 // Parameters that control the map
 const params = {
-    draggable: false,
     panControl: false,
     scrollWheel: false,
     scaleControl: false,
     disableDefaultUI: true,
+    gestureHandling: 'none',
     streetViewControl: false,
     disableDoubleClickZoom: true,
     center: { lat: 40.4526, lng: -74.4652 },
     zoom: 9,
-    styles: [{
-        "featureType": "administrative",
-        "stylers": [{
-            "visibility": "on"
-        }]
-    }, {
-        "featureType": "poi",
-        "stylers": [{
-            "visibility": "simplified"
-        }]
-    }, {
-        "featureType": "road",
-        "elementType": "labels",
-        "stylers": [{
-            "visibility": "simplified"
-        }]
-    }, {
-        "featureType": "water",
-        "stylers": [{
-            "visibility": "simplified"
-        }]
-    }, {
-        "featureType": "transit",
-        "stylers": [{
-            "visibility": "simplified"
-        }]
-    }, {
-        "featureType": "landscape",
-        "stylers": [{
-            "visibility": "simplified"
-        }]
-    }, {
-        "featureType": "road.highway",
-        "stylers": [{
-            "visibility": "off"
-        }]
-    }, {
-        "featureType": "road.local",
-        "stylers": [{
-            "visibility": "on"
-        }]
-    }, {
-        "featureType": "road.highway",
-        "elementType": "geometry",
-        "stylers": [{
-            "visibility": "on"
-        }]
-    }, {
-        "featureType": "water",
-        "stylers": [{
-            "color": "#84afa3"
-        }, {
-            "lightness": 52
-        }]
-    }, {
-        "stylers": [{
-            "saturation": -17
-        }, {
-            "gamma": 0.36
-        }]
-    }, {
-        "featureType": "transit.line",
-        "elementType": "geometry",
-        "stylers": [{
-            "color": "#3f518c"
-        }]
-    }]
+    styles: [
+        {
+          "elementType": "geometry",
+          "stylers": [
+            {
+              "color": "#1d2c4d"
+            }
+          ]
+        },
+        {
+          "elementType": "labels.text.fill",
+          "stylers": [
+            {
+              "color": "#8ec3b9"
+            }
+          ]
+        },
+        {
+          "elementType": "labels.text.stroke",
+          "stylers": [
+            {
+              "color": "#1a3646"
+            }
+          ]
+        },
+        {
+          "featureType": "administrative.country",
+          "elementType": "geometry.stroke",
+          "stylers": [
+            {
+              "color": "#4b6878"
+            }
+          ]
+        },
+        {
+          "featureType": "administrative.land_parcel",
+          "elementType": "labels.text.fill",
+          "stylers": [
+            {
+              "color": "#64779e"
+            }
+          ]
+        },
+        {
+          "featureType": "administrative.province",
+          "elementType": "geometry.stroke",
+          "stylers": [
+            {
+              "color": "#4b6878"
+            }
+          ]
+        },
+        {
+          "featureType": "landscape.man_made",
+          "elementType": "geometry.stroke",
+          "stylers": [
+            {
+              "color": "#334e87"
+            }
+          ]
+        },
+        {
+          "featureType": "landscape.natural",
+          "elementType": "geometry",
+          "stylers": [
+            {
+              "color": "#023e58"
+            }
+          ]
+        },
+        {
+          "featureType": "poi",
+          "elementType": "geometry",
+          "stylers": [
+            {
+              "color": "#283d6a"
+            }
+          ]
+        },
+        {
+          "featureType": "poi",
+          "elementType": "labels.text.fill",
+          "stylers": [
+            {
+              "color": "#6f9ba5"
+            }
+          ]
+        },
+        {
+          "featureType": "poi",
+          "elementType": "labels.text.stroke",
+          "stylers": [
+            {
+              "color": "#1d2c4d"
+            }
+          ]
+        },
+        {
+          "featureType": "poi.park",
+          "elementType": "geometry.fill",
+          "stylers": [
+            {
+              "color": "#023e58"
+            }
+          ]
+        },
+        {
+          "featureType": "poi.park",
+          "elementType": "labels.text.fill",
+          "stylers": [
+            {
+              "color": "#3C7680"
+            }
+          ]
+        },
+        {
+          "featureType": "road",
+          "elementType": "geometry",
+          "stylers": [
+            {
+              "color": "#304a7d"
+            }
+          ]
+        },
+        {
+          "featureType": "road",
+          "elementType": "labels.text.fill",
+          "stylers": [
+            {
+              "color": "#98a5be"
+            }
+          ]
+        },
+        {
+          "featureType": "road",
+          "elementType": "labels.text.stroke",
+          "stylers": [
+            {
+              "color": "#1d2c4d"
+            }
+          ]
+        },
+        {
+          "featureType": "road.highway",
+          "elementType": "geometry",
+          "stylers": [
+            {
+              "color": "#2c6675"
+            }
+          ]
+        },
+        {
+          "featureType": "road.highway",
+          "elementType": "geometry.stroke",
+          "stylers": [
+            {
+              "color": "#255763"
+            }
+          ]
+        },
+        {
+          "featureType": "road.highway",
+          "elementType": "labels.text.fill",
+          "stylers": [
+            {
+              "color": "#b0d5ce"
+            }
+          ]
+        },
+        {
+          "featureType": "road.highway",
+          "elementType": "labels.text.stroke",
+          "stylers": [
+            {
+              "color": "#023e58"
+            }
+          ]
+        },
+        {
+          "featureType": "transit",
+          "elementType": "labels.text.fill",
+          "stylers": [
+            {
+              "color": "#98a5be"
+            }
+          ]
+        },
+        {
+          "featureType": "transit",
+          "elementType": "labels.text.stroke",
+          "stylers": [
+            {
+              "color": "#1d2c4d"
+            }
+          ]
+        },
+        {
+          "featureType": "transit.line",
+          "elementType": "geometry.fill",
+          "stylers": [
+            {
+              "color": "#283d6a"
+            }
+          ]
+        },
+        {
+          "featureType": "transit.station",
+          "elementType": "geometry",
+          "stylers": [
+            {
+              "color": "#3a4762"
+            }
+          ]
+        },
+        {
+          "featureType": "water",
+          "elementType": "geometry",
+          "stylers": [
+            {
+              "color": "#0e1626"
+            }
+          ]
+        },
+        {
+          "featureType": "water",
+          "elementType": "labels.text.fill",
+          "stylers": [
+            {
+              "color": "#4e6d70"
+            }
+          ]
+        }
+    ]
 };
 
 // Call this function to start the animation from location1 to location2
-const animate = (flight) => {
+const animate = flight => {
 
     let start = new google.maps.LatLng(flight.origin.lat, flight.origin.long);
     let end = new google.maps.LatLng(flight.destination.lat, flight.destination.long);
@@ -128,31 +294,41 @@ const animate = (flight) => {
 
     flight.trailPath = new google.maps.Polyline({
         path: [start, start],
-        strokeColor: '#f00', // ?
+        strokeColor: '#fff', 
         strokeWeight: 1,
         map: map,
         geodesic: true
     });
+    flight.trailPath.setMap(map);
+
+    let dataBlock = createDataBlock(flight);
+    flight.dataBlock = {
+        popup: new Popup(start, dataBlock.div),
+        data1: dataBlock.data1,
+        data2: dataBlock.data2
+    }
+    flight.dataBlock.popup.setMap(map);
 
     activeFlights.push(flight);
 
     console.log('Running flight ' + flight.aircraftId + ' from ' + flight.origin.name + ' to ' + flight.destination.name);
     console.log('Total distance: ' + (google.maps.geometry.spherical.computeDistanceBetween(start, end) / 1000) + ' km');
 
-    flight.animationLoop = window.requestAnimationFrame(() => tick(start, end, flight));
+    flight.animationLoop = window.requestAnimationFrame(() => tick(flight));
 };
 
-const tick = (start, end, flight) => {
+const tick = flight => {
 
+    let start = new google.maps.LatLng(flight.origin.lat, flight.origin.long);
+    let end = new google.maps.LatLng(flight.destination.lat, flight.destination.long);
+    
     let distance = google.maps.geometry.spherical.computeDistanceBetween(start, end);
     flight.animationIndex += knotsToMps(flight.groundspeed) / distance * simSpeed * 20;
-
     let next = google.maps.geometry.spherical.interpolate(start, end, flight.animationIndex / 100);
  
     flight.planePath.icons[0].offset = Math.min(flight.animationIndex, 100) + '%';
     flight.planePath.setPath(flight.planePath.getPath());
     flight.trailPath.setPath([start, next]);
-    
     
     if (!trailEnabled) {
         flight.trailPath.setMap(null);
@@ -160,34 +336,66 @@ const tick = (start, end, flight) => {
         flight.trailPath.setMap(map);
     }
 
-    // map.panTo(next);
+    flight.dataBlock.popup.position = next;
+    flight.dataBlock.popup.draw();
+    
+    switch (getDataBlockCycle()) {
+        case 0:
+            flight.dataBlock.popup.containerDiv.children[0].children[0].innerHTML = flight.dataBlock.data1;
+            break;
+        case 1:
+            flight.dataBlock.popup.containerDiv.children[0].children[0].innerHTML = flight.dataBlock.data2;
+            break;
+    }
 
     if (flight.animationIndex >= 100) {
         removePlane(flight);
-        setTimeout(()=>{}, 700);
+        // setTimeout(()=>{}, 700);
         // stopTimer();
     } else {
-        flight.animationLoop = window.requestAnimationFrame(() => tick(start, end, flight));
+        flight.animationLoop = window.requestAnimationFrame(() => tick(flight));
     }
 
 };
 
-const removePlane = (flight) => {
+const removePlane = flight => {
 
     activeFlights.splice(activeFlights.indexOf(flight), 1);
 
     flight?.planePath?.setMap(null);
     flight?.trailPath?.setMap(null);
+    flight?.dataBlock?.popup?.setMap(null);
 
     window.cancelAnimationFrame(flight.animationLoop);
     flight.animationIndex = 0;
+
+    // Check if last plane to stop timer
+    if (activeFlights.length == 0) {
+        // stopTimer();
+    }
 
 };
 
 const knotsToMps = knots => knots * 0.514444;
 
-const play = () => {
+// Times with seconds ending in 0-4 return 0; times with seconds ending in 5-9 return 1
+const getDataBlockCycle = () => Math.ceil(new Date().getSeconds() / 5) % 2;
 
+const createDataBlock = flight => {
+    // Temp
+    let div = document.createElement('div');
+    let data1 = flight.aircraftId + '<br>' + (flight.altitude / 100) + '  ' + flight.groundspeed + 'PF';
+    let data2 = flight.aircraftId + '<br>' + flight.destination.name + '  ' + flight.aircraftType;
+    div.innerHTML = data1;
+    // div.style.textAlign = 'center';
+    return {
+        div: div,
+        data1: data1,
+        data2: data2 
+    };
+}
+
+const play = () => {
     if (activeFlights.length == 0) {
         // Starting
         startTimer();
@@ -198,12 +406,10 @@ const play = () => {
     } else {
         pause(false);
     }
-   
 };
 
-function pause(state) {
-
-    if(state){
+const pause = (state) => {
+    if (state) {
         simSpeed = 0;
         stopTimer();
         pauseState = true;
@@ -213,49 +419,81 @@ function pause(state) {
         startTimer();
         pauseState = false
     }
-    
-}
+};
 
 const reset = () => {
-
     [...activeFlights].forEach(e => removePlane(e));
-
     pause(false);
     resetTimer();
-
 }
 
-function changeSpeed(){
-    var selectedSpeed = document.getElementById("selectedSpeed").value;
-
-    if (selectedSpeed == 1) {
+const changeSpeed = () => {
+    let speed = document.getElementById("selectedSpeed").value;
+    if (!isNaN(speed)) {
+        simSpeed = speed;
+    } else {
+        // for safety
         simSpeed = 1;
     }
-        else if (selectedSpeed == 2) {
-            simSpeed = 2;
-    }
-
-        else if (selectedSpeed == 4) {
-            simSpeed = 4;
-    }
-
-        else if (selectedSpeed == 8) {
-            simSpeed = 8;
-    }
-
-        else if (selectedSpeed == 0.5) {
-            simSpeed = 0.5;
-    }
-
-        else if (selectedSpeed == 0.25) {
-            simSpeed = 0.25;
-    }
-}
+};
 
 // Callback for the Google Maps import
 async function initMap() {
     map = new google.maps.Map(document.getElementById("map"), params);
     planeSvg.anchor = new google.maps.Point(planeSvg.ax, planeSvg.ay); // ?
+
+  /**
+   * A customized popup on the map.
+   */
+    Popup = class Popup extends google.maps.OverlayView {
+        constructor(position, content) {
+            super();
+            this.position = position;
+            content.classList.add("popup-bubble");
+            // This zero-height div is positioned at the bottom of the bubble.
+            const bubbleAnchor = document.createElement("div");
+            bubbleAnchor.classList.add("popup-bubble-anchor");
+            bubbleAnchor.appendChild(content);
+            // This zero-height div is positioned at the bottom of the tip.
+            this.containerDiv = document.createElement("div");
+            this.containerDiv.classList.add("popup-container");
+            this.containerDiv.appendChild(bubbleAnchor);
+            // Optionally stop clicks, etc., from bubbling up to the map.
+            Popup.preventMapHitsAndGesturesFrom(this.containerDiv);
+        }
+        /** Called when the popup is added to the map. */
+        onAdd() {
+            this.getPanes().floatPane.appendChild(this.containerDiv);
+        }
+        /** Called when the popup is removed from the map. */
+        onRemove() {
+            if (this.containerDiv.parentElement) {
+                this.containerDiv.parentElement.removeChild(this.containerDiv);
+            }
+        }
+        /** Called each frame when the popup needs to draw itself. */
+        draw() {
+            if (this.getProjection()?.fromLatLngToDivPixel(this.position)) {
+                const divPosition = this.getProjection()?.fromLatLngToDivPixel(
+                    this.position
+                );
+                // Hide the popup when it is far out of view.
+                const display =
+                    Math.abs(divPosition.x) < 4000 && Math.abs(divPosition.y) < 4000
+                    ? "block"
+                    : "none";
+
+                if (display === "block") {
+                    this.containerDiv.style.left = divPosition.x + "px";
+                    this.containerDiv.style.top = divPosition.y + "px";
+                }
+
+                if (this.containerDiv.style.display !== display) {
+                    this.containerDiv.style.display = display;
+                }
+            }
+        }
+    }
 
     // Load in locations from JSON
     await fetch('flights.json')
@@ -266,6 +504,7 @@ async function initMap() {
                 e.trailPath = null;
                 e.animationIndex = 0;
                 e.animationLoop = false;
+                e.dataBlock = null;
             });
             return res;
         })

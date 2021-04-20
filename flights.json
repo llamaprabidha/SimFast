@@ -1,6 +1,7 @@
 [
     {
         "aircraftId": "some flight id",
+        "aircraftType": "C172", 
         "altitude": 2600,
         "groundspeed": 110,
         "origin": {
@@ -16,6 +17,7 @@
     },
     {
         "aircraftId": "some other flight id",
+        "aircraftType": "C172",
         "altitude": 2600,
         "groundspeed": 110,
         "origin": {

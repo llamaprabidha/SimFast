@@ -53,6 +53,11 @@ function timerSpeed(){
       else if (selectedSpeed == 0.25) {
          playSpeed = 4000;
          return;
+     } 
+     
+     else if (selectedSpeed == 16) {
+        playSpeed = 62.5;
+        return;
      }
 }
 

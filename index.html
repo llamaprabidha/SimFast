@@ -1,11 +1,6 @@
 <!DOCTYPE html>
 <head>
     <title>SimFast Test</title>
-    <style>
-        body{
-            background-color: #ffffff;
-        }
-    </style>
     <link rel="stylesheet" href="main.css"></style>
     <link rel="stylesheet" href="KeyboardStyle.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -19,6 +14,8 @@
     <!-- 
     <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC2aYWqeY3KKaweojM-AgxLx7j6D2IWSHM&callback=initMap"></script> 
     -->
+    <script src="script.js"></script>
+    <link rel="stylesheet" href="styles.css" />
 </head>
 
 <body>
@@ -38,45 +35,32 @@
     </ul>
 
     <select id="selectedSpeed" class="button__speedup" onchange="changeSpeed();timerSpeed()">
-        <option value="1">1x</option>
         <option value="0.25">0.25x</option>
         <option value="0.5">0.5x</option>
+        <option value="1" selected>1x</option>
         <option value="2">2x</option>
         <option value="4">4x</option>
         <option value="8">8x</option>
+        <option value="16">16x</option>
     </select>
     
     <div id="map_container">
         <div id="map"></div>
     </div> 
 
+    <div class="container">
+        <div class="content-block">
+          <select id="flights" onchange="selectHandler()">
+            <option value="">Select Flight...</option>
+            <option value="FLIGHTSTRIP1.jpg">026DSWA1126B738PHLOOD</option>
+            <option value="FLIGHTSTRIP2.jpg">053EN71453BE20RBVVVCN</option>
+            <option value="FLIGHTSTRIP3.jpg">056DAAL456A319PHLAY</option>
+            <option value="FLIGHTSTRIP4.jpg">063DDAL3363B752PHLEWR</option>
+          </select>
+        </div>
+        <div class="content-block"><div id="image-container" /></div>
+      </div>
+
     <!-- creates an input box for keyboard-->
     <input class="use-keyboard-input" style="position: fixed; bottom: 430.5px; right: 16px; width: 759px; height: 25px;"></input>
 </body>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-    <script src="script.js"></script>
-    <link rel="stylesheet" href="styles.css" />
-  </head>
-  <body>
-    <div class="container">
-      <div class="content-block">
-        <select id="flights" onchange="selectHandler()">
-          <option value="">Select Flight...</option>
-          <option value="FLIGHTSTRIP1.jpg">026DSWA1126B738PHLOOD</option>
-          <option value="FLIGHTSTRIP2.jpg">053EN71453BE20RBVVVCN</option>
-          <option value="FLIGHTSTRIP3.jpg">056DAAL456A319PHLAY</option>
-          <option value="FLIGHTSTRIP4.jpg">063DDAL3363B752PHLEWR</option>
-        </select>
-      </div>
-      <div class="content-block"><div id="image-container" /></div>
-    </div>
-  </body>
-</html>
-
-
-
