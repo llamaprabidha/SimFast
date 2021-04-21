@@ -6,7 +6,7 @@ let map,
   activeFlights = [],
   offScreenFlights = [], // flights that are not visible yet
   planeSvg = {
-    path: 'M 50,5 95,97.5 5,97.5 z',
+    // path: 'M 50,5 95,97.5 5,97.5 z',
     fillColor: '#fff',
     fillOpacity: 1.5,
     strokeWeight: 0,
@@ -363,6 +363,23 @@ const getDataBlockString = (flight, cycle) => {
   return data;
 };
 
+const loadFlights = async path => {
+  flights = [];
+  await fetch(path)
+    .then(res => res.json())
+    .then(res => {
+      res.forEach(e => {
+        e.planePath = null;
+        e.trailPath = null;
+        e.animationIndex = 0;
+        e.animationLoop = false;
+        e.dataBlock = null;
+      });
+      return res;
+    })
+    .then(res => flights = res);
+}
+
 const play = () => {
   if (activeFlights.length == 0) {
     // Starting
@@ -394,6 +411,7 @@ const reset = () => {
   offScreenFlights = [];
   pause(false);
   resetTimer();
+  loadFlights('flights.json');
 }
 
 const changeSpeed = () => {
@@ -479,19 +497,7 @@ async function initMap() {
   }
 
   // Load in locations from JSON
-  await fetch('flights.json')
-    .then(res => res.json())
-    .then(res => {
-      res.forEach(e => {
-        e.planePath = null;
-        e.trailPath = null;
-        e.animationIndex = 0;
-        e.animationLoop = false;
-        e.dataBlock = null;
-      });
-      return res;
-    })
-    .then(res => flights = res);
+  await loadFlights('flights.json');
 
   console.log(flights);
 }
