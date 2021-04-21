@@ -1,20 +1,18 @@
 .container {
   position: fixed;
   left: 1150px;
-  top: 20px;
+  top: 6px;
   width: 300px;
   max-width: 40%;
   height: 40px;
   border-radius: 10px;
   padding: 8px 0;
-  
-  
 }
 
 .content-block {
   display: flex;
   flex-direction: column;
-  padding: 25px 10px;
+  padding: 10px 10px;
 }
 
 #image-container {
@@ -23,4 +21,34 @@
 
 img {
   width: 105%;
+}
+
+@media only screen and (max-width: 1919px) {
+  /* Less than a 1920 Width Screen */
+  .container {
+    position: fixed;
+    left: 56%;
+    top: 25px;
+    width: 15%;
+    max-width: 15%;
+    background-color: #121212;
+    height: 40px;
+    border-radius: 10px;
+    padding: 8px 0;
+  }
+
+  .content-block {
+    display: flex;
+    flex-direction: column;
+    padding: 1px 10px;
+    background-color: #121212;
+  }
+
+  #image-container {
+    width: 700px;
+  }
+
+  img {
+    width: 105%;
+  }
 }

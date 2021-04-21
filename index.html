@@ -24,10 +24,6 @@
     <div class="stopwatch__base" id="stopwatch">
         00:00:00
     </div>
-    <!-- Progress Bar Test-->
-    <div id="Progress">
-        <div id="Bar"></div>
-      </div>
     <!-- Control buttons-->
     <ul id="buttons", id = "test">
         <button class="button__start" onclick="play()">&#9654;</button>
@@ -49,6 +45,9 @@
         <div id="map"></div>
     </div> 
 
+     <!-- creates an input box for keyboard-->
+    <input class="use-keyboard-input"></input>
+
     <div class="container">
         <div class="content-block">
           <select id="flights" onchange="selectHandler()">
@@ -59,9 +58,6 @@
             <option value="FLIGHTSTRIP4.jpg">063DDAL3363B752PHLEWR</option>
           </select>
         </div>
-        <div class="content-block"><div id="image-container" /></div>
+        <div class="content-block"><div id="image-container"></div>
       </div>
-
-    <!-- creates an input box for keyboard-->
-    <input class="use-keyboard-input" style="position: fixed; bottom: 430.5px; right: 16px; width: 759px; height: 25px;"></input>
 </body>
