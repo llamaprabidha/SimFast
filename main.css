@@ -251,7 +251,7 @@ body {
   /* Position the div a fixed distance above the tip. */
   position: absolute;
   width: 100%;
-  bottom: 8px;
+  bottom: 16px;
   left: 0;
 }
 
@@ -267,9 +267,9 @@ body {
   width: 0;
   height: 0;
   /* The tip is 8px high, and 12px wide. */
-  border-left: 6px solid transparent;
-  border-right: 6px solid transparent;
-  border-top: 8px solid rgba(255, 255, 255, 0.75);
+  border-left: 3px solid transparent;
+  border-right: 3px solid transparent;
+  border-top: 4px solid rgba(255, 255, 255, 0.75);
 }
 
 /* JavaScript will position this div at the bottom of the popup tip. */

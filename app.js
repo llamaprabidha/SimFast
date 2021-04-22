@@ -5,16 +5,6 @@ let map,
   flights = [],
   activeFlights = [],
   offScreenFlights = [], // flights that are not visible yet
-  planeSvg = {
-    // path: 'M 50,5 95,97.5 5,97.5 z',
-    fillColor: '#fff',
-    fillOpacity: 1.5,
-    strokeWeight: 0,
-    scale: 0.15,
-    anchor: null, // google.maps isn't imported yet, so this can't be set yet
-    ax: 50, // x value to set the anchor to later
-    ay: 20, // y value to set the anchor to later
-  },
   Popup;
 
 // Parameters that control the map
@@ -238,85 +228,94 @@ const params = {
       ]
     }
   ]
-};
+}, planeIcon = 'images/v.svg';
 
 // Call this function to start the animation from location1 to location2
 const animate = flight => {
 
-  let start = new google.maps.LatLng(flight.origin.lat, flight.origin.long);
-  let end = new google.maps.LatLng(flight.destination.lat, flight.destination.long);
+  let start = flight.animprops.locations[0];
 
-  flight.planePath = new google.maps.Polyline({
-    path: [start, end],
-    strokeColor: '#0f0', // ?
-    strokeWeight: 0,
-    map: map,
-    geodesic: true,
-    icons: [{
-      icon: planeSvg,
-      offset: '0%'
-    }],
-    label: 'test'
+  flight.animprops.icon = new google.maps.Marker({
+    position: start,
+    icon: {
+      url: planeIcon,
+      scaledSize: new google.maps.Size(12, 12)
+    },
+    map: map
   });
+  //flight.animpath.icon.setMap(map);
 
-  flight.trailPath = new google.maps.Polyline({
+  flight.animprops.trails[0] = new google.maps.Polyline({
     path: [start, start],
     strokeColor: '#fff',
     strokeWeight: 1,
     map: map,
     geodesic: true
   });
-  flight.trailPath.setMap(map);
+  trailEnabled ? {} : flight.animprops.trails[0].setMap(null);
 
-  flight.dataBlock = new Popup(start, createDataBlock(flight), flight);
-  flight.dataBlock.setMap(map);
+  flight.animprops.dataBlock = new Popup(start, createDataBlock(flight), flight);
+  flight.animprops.dataBlock.setMap(map);
 
   activeFlights.push(flight);
   offScreenFlights.push(flight);
 
   console.log('Running flight ' + flight.aircraftId + ' from ' + flight.origin.name + ' to ' + flight.destination.name);
-  console.log('Total distance: ' + (google.maps.geometry.spherical.computeDistanceBetween(start, end) / 1000) + ' km');
+  console.log('Total distance: ' + (computeDistanceBetweenMultiple(flight.animprops.locations) / 1000) + ' km');
 
-  flight.animationLoop = window.requestAnimationFrame(() => tick(flight));
+  flight.animprops.loop = window.requestAnimationFrame(() => tick(flight));
+
 };
 
 const tick = flight => {
 
-  let start = new google.maps.LatLng(flight.origin.lat, flight.origin.long);
-  let end = new google.maps.LatLng(flight.destination.lat, flight.destination.long);
+  // Calculate next position
+  let location1 = flight.animprops.locations[flight.animprops.nextLocationIndex - 1];
+  let location2 = flight.animprops.locations[flight.animprops.nextLocationIndex];
+  let distance = google.maps.geometry.spherical.computeDistanceBetween(location1, location2);
 
-  let distance = google.maps.geometry.spherical.computeDistanceBetween(start, end);
-  flight.animationIndex += knotsToMps(flight.groundspeed) / distance * simSpeed * 20;
-  let next = google.maps.geometry.spherical.interpolate(start, end, flight.animationIndex / 100);
+  flight.animprops.progress += knotsToMps(flight.groundspeed) / distance * simSpeed * 20;
+  let nextPosition = google.maps.geometry.spherical.interpolate(location1, location2, flight.animprops.progress / 100);
 
-  flight.planePath.icons[0].offset = Math.min(flight.animationIndex, 100) + '%';
-  flight.planePath.setPath(flight.planePath.getPath());
-  flight.trailPath.setPath([start, next]);
+  // Update icon
+  flight.animprops.icon.setPosition(nextPosition); // Causes console lag?
 
-  if (!trailEnabled) {
-    flight.trailPath.setMap(null);
-  } else if (flight.trailPath.getMap() == null) {
-    flight.trailPath.setMap(map);
-  }
+  // Update trail
+  flight.animprops.trails[flight.animprops.trails.length - 1].setPath([location1, nextPosition]);
 
-  flight.dataBlock.position = next;
-  flight.dataBlock.draw();
-
+  // Update data block
   switch (getDataBlockCycle()) {
     case 0:
-      flight.dataBlock.containerDiv.children[0].children[0].innerHTML = getDataBlockString(flight, 0);
+      flight.animprops.dataBlock.containerDiv.children[0].children[0].innerHTML = getDataBlockString(flight, 0);
       break;
     case 1:
-      flight.dataBlock.containerDiv.children[0].children[0].innerHTML = getDataBlockString(flight, 1);
+      flight.animprops.dataBlock.containerDiv.children[0].children[0].innerHTML = getDataBlockString(flight, 1);
       break;
   }
 
-  if (flight.animationIndex >= 100) {
-    removePlane(flight);
-    // setTimeout(()=>{}, 700);
-    // stopTimer();
+  flight.animprops.dataBlock.position = nextPosition;
+  flight.animprops.dataBlock.draw();
+
+  // Check completion
+  if (flight.animprops.progress >= 100) {
+    if (flight.animprops.nextLocationIndex == flight.animprops.locations.length - 1) {
+      removePlane(flight);
+    } else {
+      flight.animprops.progress = 0;
+      flight.animprops.nextLocationIndex++;
+      let trail = new google.maps.Polyline({
+        path: [nextPosition, nextPosition],
+        strokeColor: '#fff',
+        strokeWeight: 1,
+        map: map,
+        geodesic: true
+      });
+      flight.animprops.trails.push(trail);
+      trailEnabled ? {} : trail.setMap(null);
+      flight.animprops.loop = window.requestAnimationFrame(() => tick(flight));
+    }
   } else {
-    flight.animationLoop = window.requestAnimationFrame(() => tick(flight));
+    flight.animprops.loop = window.requestAnimationFrame(() => tick(flight));
   }
 
 };
@@ -325,12 +324,16 @@ const removePlane = flight => {
 
   activeFlights.splice(activeFlights.indexOf(flight), 1);
 
-  flight?.planePath?.setMap(null);
-  flight?.trailPath?.setMap(null);
-  flight?.dataBlock?.setMap(null);
+  if (offScreenFlights.includes(flight)) {
+    offScreenFlights.splice(offScreenFlights.indexOf(flight), 1);
+  }
 
-  window.cancelAnimationFrame(flight.animationLoop);
-  flight.animationIndex = 0;
+  flight?.animprops?.icon?.setMap(null);
+  flight?.animprops?.trails?.forEach(trail => trail?.setMap(null));
+  flight?.animprops?.dataBlock?.setMap(null);
+
+  window.cancelAnimationFrame(flight?.animprops?.animationLoop);
+  flight.animprops.animationIndex = 0;
 
   // Check if last plane to stop timer
   if (activeFlights.length == 0) {
@@ -363,22 +366,51 @@ const getDataBlockString = (flight, cycle) => {
   return data;
 };
 
-const loadFlights = async path => {
+const computeDistanceBetweenMultiple = locations => {
+  let distance = 0;
+  for (let i = 0; i < locations.length; i++) {
+    if (locations?.[i+1]) {
+      distance += google.maps.geometry.spherical.computeDistanceBetween(locations[i], locations[i+1]);
+    }
+  }
+  return distance;
+}
+
+const initFlights = async path => {
   flights = [];
   await fetch(path)
-    .then(res => res.json())
-    .then(res => {
-      res.forEach(e => {
-        e.planePath = null;
-        e.trailPath = null;
-        e.animationIndex = 0;
-        e.animationLoop = false;
-        e.dataBlock = null;
+    .then(response => response.json())
+    .then(response => {
+      response.forEach(flight => {
+        flight.animprops = {};
+        flight.animprops.locations = [
+          new google.maps.LatLng(flight.origin.lat, flight.origin.long),
+          new google.maps.LatLng(flight.destination.lat, flight.destination.long)
+        ];
+        if (flight?.midpoints) {
+          let midpoints = [];
+          flight.midpoints.forEach(midpoint => {
+            midpoints.push(new google.maps.LatLng(midpoint.lat, midpoint.long));
+          });
+          flight.animprops.locations.splice(1, 0, ...midpoints);
+        }
+        flight.animprops.nextLocationIndex = 1;
+        flight.animprops.icon = null;
+        flight.animprops.trails = [];
+        flight.animprops.progress = 0;
+        flight.animprops.loop = false;
+        flight.animprops.dataBlock = null;
       });
-      return res;
+      return response;
     })
-    .then(res => flights = res);
+    .then(response => flights = response);
 }
+
+/*
+ *
+ * BUTTONS
+ *
+ */
 
 const play = () => {
   if (activeFlights.length == 0) {
@@ -386,8 +418,7 @@ const play = () => {
     startTimer();
     // move();
     animate(flights[0]);
-    setTimeout(animate(flights[1]), 10000);
-
+    animate(flights[1]);
   } else {
     pause(false);
   }
@@ -407,11 +438,11 @@ const pause = (state) => {
 };
 
 const reset = () => {
-  [...activeFlights].forEach(e => removePlane(e));
+  [...activeFlights].forEach(e => removePlane(e)); // shallow copy
   offScreenFlights = [];
   pause(false);
   resetTimer();
-  loadFlights('flights.json');
+  initFlights('flights.json');
 }
 
 const changeSpeed = () => {
@@ -424,10 +455,22 @@ const changeSpeed = () => {
   }
 };
 
-// Callback for the Google Maps import
+const toggleTrail = state => {
+  activeFlights.forEach(flight => {
+    flight?.animprops?.trails?.forEach(trail => {
+      state ? trail?.setMap(map) : trail?.setMap(null);
+    })
+  });
+}
+
+/*
+ *
+ * CALLBACK
+ *
+ */
+
 async function initMap() {
   map = new google.maps.Map(document.getElementById("map"), params);
-  planeSvg.anchor = new google.maps.Point(planeSvg.ax, planeSvg.ay);
 
   /**
    * A customized popup on the map.
@@ -497,7 +540,7 @@ async function initMap() {
   }
 
   // Load in locations from JSON
-  await loadFlights('flights.json');
+  await initFlights('flights.json');
 
   console.log(flights);
 }
