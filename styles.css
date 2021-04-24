@@ -26,12 +26,39 @@ img {
 @media only screen and (max-width: 1919px) {
   /* Less than a 1920 Width Screen */
   .container {
-    position: fixed;
+    position: relative;
     left: 56%;
-    top: 25px;
+    top: -1022px;
     width: 15%;
     max-width: 15%;
-    background-color: #121212;
+    height: 40px;
+    border-radius: 10px;
+    padding: 8px 0;
+  }
+
+  .content-block {
+    display: flex;
+    flex-direction: column;
+    padding: 5px 10px;
+  }
+
+  #image-container {
+    width: 700px;
+  }
+
+  img {
+    width: 105%;
+  }
+}
+
+@media only screen and (max-width: 1300px) {
+  /* Less than a 1300 Width Screen */
+  .container {
+    position: relative;
+    left: 1%;
+    top: -100px;
+    width: 45%;
+    max-width: 45%;
     height: 40px;
     border-radius: 10px;
     padding: 8px 0;
@@ -41,7 +68,6 @@ img {
     display: flex;
     flex-direction: column;
     padding: 1px 10px;
-    background-color: #121212;
   }
 
   #image-container {

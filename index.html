@@ -16,6 +16,7 @@
     <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC2aYWqeY3KKaweojM-AgxLx7j6D2IWSHM&callback=initMap"></script> 
     -->
     <script src="script.js"></script>
+    <script src="lightDarkMode.js" defer></script>
     <link rel="stylesheet" href="styles.css" />
 </head>
 
@@ -29,6 +30,7 @@
         <button class="button__start" onclick="play()">&#9654;</button>
         <button class="button__stop" onclick="stopTimer();pause(true)">&#9616;&#9616;&#8201;&#8201;</button>
         <button class="button__restart" onclick="reset()">&#8634;</button>
+        <button class="light__dark__button" onclick="tougleThemeColor()">☼</button>
     </ul>
 
     <select id="selectedSpeed" class="button__speedup" onchange="changeSpeed();timerSpeed()">

@@ -124,6 +124,33 @@ body {
   transition: bottom 0.4s;
 }
 
+.light__dark__button {
+  position: fixed;
+  left: 375.5px;
+  top: 15.3px;
+  width: 70px;
+  height: 40px;
+  border-color: #ffffffda;
+  background: #16a085;
+  color: #ffffffda;
+  text-align: center;
+  font-size: 1.05rem;
+  border-radius: 3px;
+  padding: 5px 0;
+  box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
+  user-select: none;
+  transition: bottom 0.4s;
+}
+
+.buttons--light-mode {
+  background: #ffffffda;
+}
+
+.light-mode {
+  background: #f2f2f2;
+  color: #111111;
+}
+
 /*Keyboard Style */
 .keyboard {
   position: fixed;
@@ -338,9 +365,9 @@ body {
 
   .light__dark__button {
     position: relative;
-    left: 290px;
-    width: 43px;
-    top: -84px;
+    left: 185px;
+    width: 50px;
+    top: -48.6px;
   }
 
   .use-keyboard-input {
@@ -354,7 +381,7 @@ body {
   .keyboard {
     position: relative;
     left: 55%;
-    top: -541px;
+    top: -600px;
     width: 45%;
     max-width: 45%;
     height: 401px;
@@ -376,6 +403,7 @@ body {
 
   .keyboard__key--extra-wide {
     width: 57.3%;
+    left: -0.1%;
     max-width: 60%;
     min-width: 57.3%;
     font-size: 0.55rem;
@@ -389,14 +417,14 @@ body {
     position: relative;
     left: 22px;
     height: 700px;
-    top: -130px;
+    top: -100px;
     width: 97%;
     max-width: 97%;
   }
 
   .button__start {
     position: relative;
-    top: -85px;
+    top: -50px;
     left: -17px;
     width: 40px;
     min-width: 35px;
@@ -404,53 +432,53 @@ body {
 
   .button__stop {
     position: relative;
-    top: -84px;
+    top: -49px;
     left: -18px;
     width: 40px;
     min-width: 35px;
   }
   .button__restart {
     position: relative;
-    top: -85px;
+    top: -50px;
     left: -19px;
     width: 40px;
     min-width: 35px;
   }
   .stopwatch__base {
     position: relative;
-    top: 2.5px;
+    top: 7px;
     left: 156px;
-    width: 4%;
+    width: 100px;
     min-width: 65px;
   }
 
   .button__speedup {
     position: relative;
-    top: -140px;
-    margin-left: 35%;
+    top: -106px;
+    left: 263px;
   }
 
   .light__dark__button {
     position: relative;
-    left: 290px;
+    left: 165px;
     width: 43px;
-    top: -84px;
+    top: -49px;
   }
 
   .use-keyboard-input {
     position: relative;
-    bottom: -320px;
-    left: 22px;
-    width: 96%;
+    bottom: -185px;
+    left: 1%;
+    width: 96.4%;
     max-width: 97%;
   }
 
   .keyboard {
     position: relative;
-    left: 22px;
-    top: 320px;
+    left: 1%;
+    top: 130px;
     width: 97%;
-    max-width: 100%;
+    max-width: 97%;
   }
 
   .keyboard__key {
