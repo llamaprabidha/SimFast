@@ -1,11 +1,11 @@
 [
     {
-        "aircraftId": "some flight id",
+        "flightId": "N536SP",
         "aircraftType": "C172", 
         "altitude": 2600,
         "groundspeed": 110,
         "origin": {
-            "name": "PHL",
+            "name": " PHL",
             "lat": 39.8729,
             "long": -75.2437
         },
@@ -16,12 +16,12 @@
         }
     },
     {
-        "aircraftId": "some other flight id",
+        "flightId": "X536SP",
         "aircraftType": "C172",
         "altitude": 2600,
         "groundspeed": 110,
         "origin": {
-            "name": "MDT", 
+            "name": " MDT", 
             "lat": 40.1942,
             "long": -76.7577
         },
@@ -37,5 +37,166 @@
                 "long": -75.2137
             }
         ]
+    },
+    {
+        "flightId": "F536SV",
+        "aircraftType": "C172", 
+        "altitude": 2600,
+        "groundspeed": 110,
+        "origin": {
+            "name": "MIA",
+            "lat": 25.7951,
+            "long": -80.2785
+        },
+        "destination": {
+            "name": "JFK",
+            "lat": 40.6413,
+            "long": -73.7781
+        }
+    },
+    {
+        "flightId": "R536SI",
+        "aircraftType": "C172", 
+        "altitude": 2600,
+        "groundspeed": 110,
+        "origin": {
+            "name": "ATL",
+            "lat": 33.6407,
+            "long": -84.4277
+        },
+        "destination": {
+            "name": "PHL",
+            "lat": 39.8729,
+            "long": -75.2437
+        }
+    },
+    {
+        "flightId": "J536SL",
+        "aircraftType": "C172", 
+        "altitude": 2600,
+        "groundspeed": 110,
+        "origin": {
+            "name": "LAX",
+            "lat": 33.9416,
+            "long": -118.4085
+        },
+        "destination": {
+            "name": "JFK",
+            "lat": 40.6413,
+            "long": -73.7781
+        }
+    },
+    {
+        "flightId": "L536TP",
+        "aircraftType": "C172", 
+        "altitude": 2600,
+        "groundspeed": 110,
+        "origin": {
+            "name": " AZO",
+            "lat": 42.2403,
+            "long": -85.5556
+        },
+        "destination": {
+            "name": "PHL",
+            "lat": 39.8729,
+            "long": -75.2437
+        }
+    },
+    {
+        "flightId": "S536I0",
+        "aircraftType": "C172", 
+        "altitude": 2600,
+        "groundspeed": 110,
+        "origin": {
+            "name": " CVG",
+            "lat": 39.0533,
+            "long": -84.6630
+        },
+        "destination": {
+            "name": "JFK",
+            "lat": 40.6413,
+            "long": -73.7781
+        }
+    },
+    {
+        "flightId": "I536PG",
+        "aircraftType": "C172", 
+        "altitude": 2600,
+        "groundspeed": 110,
+        "origin": {
+            "name": " CLT",
+            "lat": 35.2271,
+            "long": -80.8431
+        },
+        "destination": {
+            "name": "PHL",
+            "lat": 39.9526,
+            "long": -75.1652
+        }
+    },
+    {
+        "flightId": "O536YU",
+        "aircraftType": "C172", 
+        "altitude": 2600,
+        "groundspeed": 110,
+        "origin": {
+            "name": " CLE",
+            "lat": 41.4058,
+            "long": -81.8539
+        },
+        "destination": {
+            "name": "PHL",
+            "lat": 40.6413,
+            "long": -73.7781
+        }
+    },
+    {
+        "flightId": "Q536ND",
+        "aircraftType": "C172", 
+        "altitude": 2600,
+        "groundspeed": 110,
+        "origin": {
+            "name": "JFK",
+            "lat": 40.6413,
+            "long": -73.7781
+        },
+        "destination": {
+            "name": "ATL",
+            "lat": 33.7490,
+            "long": -84.3880
+        }
+    },
+    {
+        "flightId": "W536MI",
+        "aircraftType": "C172", 
+        "altitude": 2600,
+        "groundspeed": 110,
+        "origin": {
+            "name": "PHL",
+            "lat": 39.8729,
+            "long": -75.2437
+        },
+        "destination": {
+            "name": "TPA",
+            "lat": 27.9772,
+            "long": -82.5311
+        }
+    },
+    {
+        "flightId": "R536JK",
+        "aircraftType": "C172", 
+        "altitude": 2600,
+        "groundspeed": 110,
+        "origin": {
+            "name": "DAL",
+            "lat": 32.8481,
+            "long": -96.8512
+        },
+        "destination": {
+            "name": "JFK",
+            "lat": 40.6413,
+            "long": -73.7781
+        }
     }
+    
 ]
