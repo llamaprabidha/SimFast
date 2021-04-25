@@ -228,7 +228,13 @@ const params = {
       ]
     }
   ]
-}, planeIcon = 'images/v.svg';
+}, 
+planeIcon = 'images/v.svg',
+lineSymbol = {
+  path: 'M 0,1 0,1',
+  strokeOpacity: 1,
+  scale: 2
+};
 
 // Call this function to start the animation from location1 to location2
 const animate = flight => {
@@ -254,9 +260,16 @@ const animate = flight => {
   flight.animprops.trails[0] = new google.maps.Polyline({
     path: [start, start],
     strokeColor: '#fff',
-    strokeWeight: 1,
+    strokeWeight: 0,
     map: map,
-    geodesic: true
+    geodesic: true,
+    icons: [
+      {
+        icon: lineSymbol,
+        offset: '0',
+        repeat: '5px'
+      }
+    ]
   });
   trailEnabled ? {} : flight.animprops.trails[0].setMap(null);
 
@@ -315,9 +328,16 @@ const tick = flight => {
       let trail = new google.maps.Polyline({
         path: [nextPosition, nextPosition],
         strokeColor: '#fff',
-        strokeWeight: 1,
+        strokeWeight: 0,
         map: map,
-        geodesic: true
+        geodesic: true,
+        icons: [
+          {
+            icon: lineSymbol,
+            offset: '0',
+            repeat: '5px'
+          }
+        ]
       });
       flight.animprops.trails.push(trail);
       trailEnabled ? {} : trail.setMap(null);
