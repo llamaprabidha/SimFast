@@ -23,6 +23,7 @@ img {
   width: 105%;
 }
 
+
 @media only screen and (max-width: 1919px) {
   /* Less than a 1920 Width Screen */
   .container {
