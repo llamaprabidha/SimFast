@@ -322,6 +322,7 @@ const tick = flight => {
 const removePlane = flight => {
 
   activeFlights.splice(activeFlights.indexOf(flight), 1);
+  removeFlightFromFlightsList(flight)
 
   flight?.animprops?.icon?.setMap(null);
   flight?.animprops?.trails?.forEach(trail => trail?.setMap(null));

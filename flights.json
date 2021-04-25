@@ -49,10 +49,17 @@
             "long": -80.2785
         },
         "destination": {
-            "name": "JFK",
-            "lat": 40.6413,
-            "long": -73.7781
-        }
+            "name": "BOS",
+            "lat": 42.3636,
+            "long": -71.0097
+        },
+        "midpoints": [
+            {
+                "name": "FIX1",
+                "lat": 40.0612,
+                "long": -73.4639
+            }
+        ]
     },
     {
         "flightId": "R536SI",
@@ -74,7 +81,7 @@
         "flightId": "J536SL",
         "aircraftType": "C172", 
         "altitude": 2600,
-        "groundspeed": 110,
+        "groundspeed": 200,
         "origin": {
             "name": "LAX",
             "lat": 33.9416,
@@ -154,7 +161,7 @@
         "flightId": "Q536ND",
         "aircraftType": "C172", 
         "altitude": 2600,
-        "groundspeed": 110,
+        "groundspeed": 180,
         "origin": {
             "name": "JFK",
             "lat": 40.6413,
@@ -170,7 +177,7 @@
         "flightId": "W536MI",
         "aircraftType": "C172", 
         "altitude": 2600,
-        "groundspeed": 110,
+        "groundspeed": 180,
         "origin": {
             "name": "PHL",
             "lat": 39.8729,
@@ -186,17 +193,24 @@
         "flightId": "R536JK",
         "aircraftType": "C172", 
         "altitude": 2600,
-        "groundspeed": 110,
+        "groundspeed": 180,
         "origin": {
             "name": "DAL",
             "lat": 32.8481,
             "long": -96.8512
         },
         "destination": {
-            "name": "JFK",
-            "lat": 40.6413,
-            "long": -73.7781
-        }
+            "name": "BOS",
+            "lat": 42.3656,
+            "long": -72.0096
+        },
+        "midpoints": [
+            {
+                "name": "FIX1",
+                "lat": 40.3729,
+                "long": -75.2137
+            }
+        ]
     }
     
 ]
