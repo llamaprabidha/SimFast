@@ -24,6 +24,7 @@ img {
   border: 5px solid #ffffff;
 }
 
+
 @media only screen and (max-width: 1919px) {
   /* Less than a 1920 Width Screen */
   .container {
