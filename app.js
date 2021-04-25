@@ -254,20 +254,7 @@ const animate = flight => {
   });
 
   // Create plane trail
-  flight.animprops.trails[0] = new google.maps.Polyline({
-    path: [start, start],
-    strokeColor: '#fff',
-    strokeWeight: 0,
-    map: map,
-    geodesic: true,
-    icons: [
-      {
-        icon: lineSymbol,
-        offset: '0',
-        repeat: '5px'
-      }
-    ]
-  });
+  flight.animprops.trails[0] = createTrail(start);
   trailEnabled ? {} : flight.animprops.trails[0].setMap(null);
 
   // Create data block
@@ -321,20 +308,7 @@ const tick = flight => {
     } else {
       flight.animprops.progress = 0;
       flight.animprops.nextLocationIndex++;
-      let trail = new google.maps.Polyline({
-        path: [nextPosition, nextPosition],
-        strokeColor: '#fff',
-        strokeWeight: 0,
-        map: map,
-        geodesic: true,
-        icons: [
-          {
-            icon: lineSymbol,
-            offset: '0',
-            repeat: '5px'
-          }
-        ]
-      });
+      let trail = createTrail(nextPosition);
       flight.animprops.trails.push(trail);
       trailEnabled ? {} : trail.setMap(null);
       flight.animprops.loop = window.requestAnimationFrame(() => tick(flight));
@@ -393,7 +367,7 @@ const getDataBlockString = (flight, cycle) => {
   return data;
 };
 
-const getFlightsBoxString = flight => {
+const getFlightsListString = flight => {
   let distance = Math.round(google.maps.geometry.spherical.computeLength(flight.animprops.locations) / 1000) + ' km';
   return flight.flightId + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + distance + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'
         + flight.origin.name + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + flight.destination.name;
@@ -429,32 +403,65 @@ const initFlights = async path => {
     .then(response => flights = response);
 }
 
+const addMidpoint = (flight, location, index, deleteNext = false) => {
+  if (index == flight.animprops.nextLocationIndex) {
+    let current = flight.animprops.dataBlock.position;
+    let trail = createTrail(location);
+    flight.animprops.locations.splice(index, 0, ...[current, location]);
+    deleteNext ? flight.animprops.locations.splice(flight.animprops.nextLocationIndex + 2, 1) : {};
+    flight.animprops.trails.push(trail);
+    trailEnabled ? {} : trail.setMap(null);
+    flight.animprops.nextLocationIndex++;
+    flight.animprops.progress = 0;
+  } else if (index < flights.animprops.nextLocationIndex && index < flights.animprops.locations.length) {
+    flight.animprops.locations.splice(index, 0, location);
+  }
+};
+
+const createTrail = location => {
+  return new google.maps.Polyline({
+    path: [location, location],
+    strokeColor: '#fff',
+    strokeWeight: 0,
+    map: map,
+    geodesic: true,
+    icons: [
+      {
+        icon: lineSymbol,
+        offset: '0',
+        repeat: '5px'
+      }
+    ]
+  });
+};
+
+
 /*
  *
  * FLIGHT BOX & FLIGHT STRIPS
  * 
  */ 
 
-const initFlightsBox = () => {
-  let flightsBox = document.getElementById('flights');
-  let numFlights = flightsBox.options.length;
+const initFlightsList = () => {
+  let flightsList = document.getElementById('flights');
+  let numFlights = flightsList.options.length;
   for (let i = 0; i < numFlights - 1; i++) {
-    flightsBox.remove(1);
+    flightsList.remove(1);
   }
-  flights.forEach(flight => addFlightToFlightsBox(flight));
+  flights.forEach(flight => addFlightToFlightsList(flight));
 };
 
-const addFlightToFlightsBox = flight => {
+const addFlightToFlightsList = flight => {
   let option = document.createElement('option');
   option.id = flight.flightId;
-  option.innerHTML = getFlightsBoxString(flight);
+  option.innerHTML = getFlightsListString(flight);
   option.onclick = () => {
     displayFlightStrip(flight);
   };
   document.getElementById('flights').add(option);
 };
 
-const removeFlightFromFlightsBox = flight => document.getElementById(flight.flightId)?.remove();
+const removeFlightFromFlightsList = flight => document.getElementById(flight.flightId)?.remove();
 
 const displayFlightStrip = flight => {
   let flightStripContainer = document.getElementById('image-container');
@@ -467,6 +474,32 @@ const displayFlightStrip = flight => {
     flightStripContainer.innerHTML = '';
   }
 };
+
+/*
+ *
+ * KEYBOARD COMMANDS
+ * 
+ */
+
+const updateFlightOnFlightsList = flight => document.getElementById(flight.flightId).innerHTML = getFlightsListString(flight);
+
+const changeFlightSpeed = (flight, speed) => flight.groundspeed = speed;
+
+const changeFlightAltitude = (flight, altitude) => flight.altitude = altitude;
+
+// Travels in the new direction the remaining distance to the original next location 
+const changeFlightHeading = (flight, direction) => {
+  let currentPosition = flight.animprops.dataBlock.position;
+  let nextLocationIndex = flight.animprops.nextLocationIndex;
+  let distanceRemaining = google.maps.geometry.spherical.computeDistanceBetween(currentPosition, flight.animprops.locations[nextLocationIndex]);
+  let newPosition = google.maps.geometry.spherical.computeOffset(currentPosition, distanceRemaining, direction);
+  addMidpoint(flight, newPosition, nextLocationIndex, true);
+};
+
+/*
+// Heading change test
+const testHeadingChange = () => changeFlightHeading(flights[0], 90);
+*/
 
 /*
  *
@@ -502,7 +535,7 @@ const pause = (state) => {
 
 const reset = () => {
   initFlights('flights.json').then(response => {
-    initFlightsBox();
+    initFlightsList();
     displayFlightStrip(null);
     [...activeFlights].forEach(e => removePlane(e)); // shallow copy
     pause(false);
@@ -595,11 +628,11 @@ async function initMap() {
         if (!this.onScreen && onScreen) {
           this.onScreen = true;
           // Remove from flight box
-          removeFlightFromFlightsBox(this.flight);
+          removeFlightFromFlightsList(this.flight);
         } else if (this.onScreen && !onScreen) {
           // If the flight needs to reappear in the offscreen list if/when it goes off screen again
           this.onScreen = false;
-          addFlightToFlightsBox(flight);
+          addFlightToFlightsList(flight);
         }
 
       }
@@ -608,17 +641,8 @@ async function initMap() {
 
   // Load in locations from JSON
   await initFlights('flights.json');
-  initFlightsBox();
+  initFlightsList();
 
   console.log(flights);
 }
 
-/*
-const testInsertFlight = () => {
-  let current = flights[0].animprops.dataBlock.position;
-  let next = new google.maps.LatLng(39.4526, -75.4652);
-  flights[0].animprops.locations.splice(1, 0, ...[current, next]);
-  flights[0].animprops.progress = 0;
-  flights[0].animprops.nextLocationIndex++;
-};
-*/
