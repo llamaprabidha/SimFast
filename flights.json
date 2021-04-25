@@ -1,6 +1,6 @@
 [
     {
-        "aircraftId": "some flight id",
+        "flightId": "N536SP",
         "aircraftType": "C172", 
         "altitude": 2600,
         "groundspeed": 110,
@@ -16,7 +16,7 @@
         }
     },
     {
-        "aircraftId": "some other flight id",
+        "flightId": "X536SP",
         "aircraftType": "C172",
         "altitude": 2600,
         "groundspeed": 110,

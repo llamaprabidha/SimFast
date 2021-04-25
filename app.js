@@ -1,11 +1,10 @@
 let map,
-  trailEnabled = false,
-  pauseState = false,
-  simSpeed = 1,
-  flights = [],
-  activeFlights = [],
-  offScreenFlights = [], // flights that are not visible yet
-  Popup;
+trailEnabled = false,
+pauseState = false,
+simSpeed = 1,
+flights = [],
+activeFlights = [],
+Popup;
 
 // Parameters that control the map
 const params = {
@@ -228,7 +227,7 @@ const params = {
       ]
     }
   ]
-}, 
+},
 planeIcon = 'images/v.svg',
 lineSymbol = {
   path: 'M 0,1 0,1',
@@ -251,9 +250,7 @@ const animate = flight => {
     map: map
   });
   flight.animprops.icon.addListener('click', () => {
-    // Temporary
-    // Will display flight strip, probably
-    console.log('Flight ' + flight.aircraftId + ' clicked');
+    displayFlightStrip(flight);
   });
 
   // Create plane trail
@@ -278,10 +275,9 @@ const animate = flight => {
   flight.animprops.dataBlock.setMap(map);
 
   activeFlights.push(flight);
-  offScreenFlights.push(flight);
 
   // Log flight to console
-  console.log('Running flight ' + flight.aircraftId + ' from ' + flight.origin.name + ' to ' + flight.destination.name);
+  console.log('Running flight ' + flight.flightId + ' from ' + flight.origin.name + ' to ' + flight.destination.name);
   console.log('Total distance: ' + (google.maps.geometry.spherical.computeLength(flight.animprops.locations) / 1000) + ' km');
 
   // Initiate flight loop
@@ -353,10 +349,6 @@ const removePlane = flight => {
 
   activeFlights.splice(activeFlights.indexOf(flight), 1);
 
-  if (offScreenFlights.includes(flight)) {
-    offScreenFlights.splice(offScreenFlights.indexOf(flight), 1);
-  }
-
   flight?.animprops?.icon?.setMap(null);
   flight?.animprops?.trails?.forEach(trail => trail?.setMap(null));
   flight?.animprops?.dataBlock?.setMap(null);
@@ -370,6 +362,12 @@ const removePlane = flight => {
   }
 
 };
+
+/*
+ *
+ * UTILITY
+ * 
+ */
 
 const knotsToMps = knots => knots * 0.514444;
 
@@ -386,13 +384,19 @@ const getDataBlockString = (flight, cycle) => {
   let data;
   switch (cycle) {
     case 0:
-      data = flight.aircraftId + '<br>' + (flight.altitude / 100) + '  ' + flight.groundspeed + 'PF';
+      data = flight.flightId + '<br>' + (flight.altitude / 100) + '  ' + flight.groundspeed + 'PF';
       break;
     case 1:
-      data = flight.aircraftId + '<br>' + flight.destination.name + '  ' + flight.aircraftType;
+      data = flight.flightId + '<br>' + flight.destination.name + '  ' + flight.aircraftType;
       break;
   }
   return data;
+};
+
+const getFlightBoxString = flight => {
+  let distance = Math.round(google.maps.geometry.spherical.computeLength(flight.animprops.locations) / 1000) + ' km';
+  return flight.flightId + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + distance + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'
+        + flight.origin.name + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + flight.destination.name;
 };
 
 const initFlights = async path => {
@@ -427,6 +431,41 @@ const initFlights = async path => {
 
 /*
  *
+ * FLIGHT BOX & FLIGHT STRIPS
+ * 
+ */ 
+
+const initFlightsBox = () => {
+  let flightBox = document.getElementById('flights');
+  let numFlights = flightBox.options.length;
+  for (let i = 0; i < numFlights - 1; i++) {
+    flightBox.remove(1);
+  }
+  flights.forEach(flight => {
+    let option = document.createElement('option');
+    option.id = flight.flightId;
+    option.innerHTML = getFlightBoxString(flight);
+    option.onclick = () => {
+      displayFlightStrip(flight);
+    };
+    flightBox.add(option);
+  });
+};
+
+const displayFlightStrip = flight => {
+  let flightStripContainer = document.getElementById('image-container');
+  if (flight) {
+    let flightStripImage = document.createElement('img');
+    flightStripImage.src = 'images/' + flight?.flightId + '.jpg';
+    flightStripContainer.innerHTML = '';
+    flightStripContainer.appendChild(flightStripImage);
+  } else {
+    flightStripContainer.innerHTML = '';
+  }
+};
+
+/*
+ *
  * BUTTONS
  *
  */
@@ -458,11 +497,13 @@ const pause = (state) => {
 };
 
 const reset = () => {
-  [...activeFlights].forEach(e => removePlane(e)); // shallow copy
-  offScreenFlights = [];
-  pause(false);
-  resetTimer();
-  initFlights('flights.json');
+  initFlights('flights.json').then(response => {
+    initFlightsBox();
+    displayFlightStrip(null);
+    [...activeFlights].forEach(e => removePlane(e)); // shallow copy
+    pause(false);
+    resetTimer();
+  });
 }
 
 const changeSpeed = () => {
@@ -549,11 +590,13 @@ async function initMap() {
 
         if (!this.onScreen && onScreen) {
           this.onScreen = true;
-          offScreenFlights.splice(offScreenFlights.indexOf(this.flight), 1);
+          // remove from flight box
+          let flightsBox = document.getElementById('flights');
+          
         } else if (this.onScreen && !onScreen) {
           // If the flight needs to reappear in the offscreen list if/when it goes off screen again
           this.onScreen = false;
-          offScreenFlights.push(this.fight);
+          // add to box
         }
 
       }
@@ -562,6 +605,7 @@ async function initMap() {
 
   // Load in locations from JSON
   await initFlights('flights.json');
+  initFlightsBox();
 
   console.log(flights);
 }
