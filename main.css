@@ -263,7 +263,7 @@ body {
   /* Style the bubble. */
   /*background-color: rgba(0, 0, 0, 0.85);*/
   background-color: transparent;
-  text-align: center;
+  text-align: left;
   color: white;
   padding: 5px;
   border-radius: 5px;
@@ -395,7 +395,7 @@ body {
   }
 
   .keyboard__key--wide {
-    width: 90px;
+    width: 11.8%;
     left: -0.1%;
     max-width: 15%;
     font-size: 0.55rem;
@@ -489,7 +489,7 @@ body {
   }
 
   .keyboard__key--wide {
-    width: 12.7%;
+    width: 9.3%;
     max-width: 15%;
     font-size: 0.55rem;
   }
