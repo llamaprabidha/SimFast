@@ -496,10 +496,10 @@ const changeFlightHeading = (flight, direction) => {
   addMidpoint(flight, newPosition, nextLocationIndex, true);
 };
 
-/*
+
 // Heading change test
-const testHeadingChange = () => changeFlightHeading(flights[0], 90);
-*/
+const testHeadingChange = () => changeFlightHeading(flights[1], 0);
+
 
 /*
  *
@@ -632,7 +632,7 @@ async function initMap() {
         } else if (this.onScreen && !onScreen) {
           // If the flight needs to reappear in the offscreen list if/when it goes off screen again
           this.onScreen = false;
-          addFlightToFlightsList(flight);
+          addFlightToFlightsList(this.flight);
         }
 
       }
