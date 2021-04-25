@@ -6,10 +6,9 @@ body {
   width: 100%;
 }
 /*Flight List style*/
-.list-style{
-
-  width : 350px;
-  font-family: 'Courier New', Courier, monospace;
+.list-style {
+  width: 780px;
+  font-family: "Courier New", Courier, monospace;
 }
 
 /* Map Style */
@@ -324,6 +323,10 @@ body {
     height: 100vh;
   }
 
+  .list-style {
+    width: 320%;
+  }
+
   #map {
     position: relative;
     left: 22px;
@@ -419,6 +422,10 @@ body {
 @media only screen and (max-width: 1300px) {
   /* Less than a 1300 Width Screen */
 
+  .list-style {
+    width: 550px;
+  }
+
   #map {
     position: relative;
     left: 22px;
@@ -504,5 +511,24 @@ body {
     width: 55%;
     max-width: 55%;
     font-size: 0.55rem;
+  }
+}
+
+@media only screen and (max-width: 895px) {
+  /* Less than a 895 Width Screen */
+  .use-keyboard-input {
+    position: relative;
+    bottom: -358px;
+    left: 1%;
+    width: 96.4%;
+    max-width: 97%;
+  }
+
+  .keyboard {
+    position: relative;
+    left: 1%;
+    top: 300px;
+    width: 97%;
+    max-width: 97%;
   }
 }

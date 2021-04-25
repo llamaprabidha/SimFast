@@ -24,7 +24,6 @@ img {
   border: 5px solid #ffffff;
 }
 
-
 @media only screen and (max-width: 1919px) {
   /* Less than a 1920 Width Screen */
   .container {
@@ -45,11 +44,11 @@ img {
   }
 
   #image-container {
-    width: 300%;
+    width: 650px;
   }
 
   img {
-    width: 105%;
+    width: 100%;
   }
 }
 
@@ -73,10 +72,24 @@ img {
   }
 
   #image-container {
-    width: 700px;
+    position: absolute;
+    width: 600px;
+    top: 24px;
+    left: 570px;
   }
 
   img {
     width: 105%;
+    top: 200px;
+  }
+}
+
+@media only screen and (max-width: 895px) {
+  /* Less than a 895 Width Screen */
+  #image-container {
+    position: absolute;
+    width: 518px;
+    top: 250px;
+    left: 10px;
   }
 }
