@@ -514,7 +514,17 @@ const play = () => {
     // move();
     animate(flights[0]);
     animate(flights[1]);
-    flights?.[2] ? animate(flights[2]) : {};
+    animate(flights[2]);
+    animate(flights[3]);
+    animate(flights[4]);
+    animate(flights[5]);
+    animate(flights[6]);
+    animate(flights[7]);
+    animate(flights[8]);
+    animate(flights[9]);
+    animate(flights[10]);
+    animate(flights[11]);
+    flights?.[12] ? animate(flights[12]) : {};
   } else {
     pause(false);
   }
