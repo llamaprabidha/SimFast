@@ -393,7 +393,7 @@ const getDataBlockString = (flight, cycle) => {
   return data;
 };
 
-const getFlightBoxString = flight => {
+const getFlightsBoxString = flight => {
   let distance = Math.round(google.maps.geometry.spherical.computeLength(flight.animprops.locations) / 1000) + ' km';
   return flight.flightId + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + distance + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'
         + flight.origin.name + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + flight.destination.name;
@@ -436,21 +436,25 @@ const initFlights = async path => {
  */ 
 
 const initFlightsBox = () => {
-  let flightBox = document.getElementById('flights');
-  let numFlights = flightBox.options.length;
+  let flightsBox = document.getElementById('flights');
+  let numFlights = flightsBox.options.length;
   for (let i = 0; i < numFlights - 1; i++) {
-    flightBox.remove(1);
+    flightsBox.remove(1);
   }
-  flights.forEach(flight => {
-    let option = document.createElement('option');
-    option.id = flight.flightId;
-    option.innerHTML = getFlightBoxString(flight);
-    option.onclick = () => {
-      displayFlightStrip(flight);
-    };
-    flightBox.add(option);
-  });
+  flights.forEach(flight => addFlightToFlightsBox(flight));
 };
+
+const addFlightToFlightsBox = flight => {
+  let option = document.createElement('option');
+  option.id = flight.flightId;
+  option.innerHTML = getFlightsBoxString(flight);
+  option.onclick = () => {
+    displayFlightStrip(flight);
+  };
+  document.getElementById('flights').add(option);
+};
+
+const removeFlightFromFlightsBox = flight => document.getElementById(flight.flightId)?.remove();
 
 const displayFlightStrip = flight => {
   let flightStripContainer = document.getElementById('image-container');
@@ -590,13 +594,12 @@ async function initMap() {
 
         if (!this.onScreen && onScreen) {
           this.onScreen = true;
-          // remove from flight box
-          let flightsBox = document.getElementById('flights');
-          
+          // Remove from flight box
+          removeFlightFromFlightsBox(this.flight);
         } else if (this.onScreen && !onScreen) {
           // If the flight needs to reappear in the offscreen list if/when it goes off screen again
           this.onScreen = false;
-          // add to box
+          addFlightToFlightsBox(flight);
         }
 
       }
