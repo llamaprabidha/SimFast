@@ -100,3 +100,10 @@ Example: `A 5000 N536SP` will change NF36SP's altitude to 5000 m (will display 0
 Both of these function the same. Speed is expressed in knots. Note speed is displayed divided by 10 on the data block. The value to enter is the actual speed. This will result in an observable speed change.
 
 Example: `S 530 N536SP` will change NF36SP's speed to 530 kt (will display 53).
+
+### Toggle Trail Visibility
+ - TRAILENABLED [TRUE/FALSE]
+
+Enables or disables visibility of trails on the scope.
+
+Example: `TRAILENABLED TRUE` will make trails visible.
