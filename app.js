@@ -496,6 +496,56 @@ const changeFlightHeading = (flight, direction) => {
   addMidpoint(flight, newPosition, nextLocationIndex, true);
 };
 
+const parseCommand = command => {
+
+  let parts = command.split(/(\s+)/).filter( e => e.trim().length > 0);
+  
+  switch(parts?.[0]) {
+    case 'H':
+    case 'HEADING':
+      let heading = parseInt(parts?.[1]);
+      if (!isNaN(heading) && parts?.[2]) {
+        let flight = activeFlights.find(flight => flight.flightId == parts[2]);
+        if (flight) {
+          changeFlightHeading(flight, heading);
+        }
+      }
+      break;
+    case 'A':
+    case 'ALTITUDE':
+      let altitude = parseInt(parts?.[1]);
+      if (!isNaN(altitude) && parts?.[2]) {
+        let flight = activeFlights.find(flight => flight.flightId == parts[2]);
+        if (flight) {
+          changeFlightAltitude(flight, altitude);
+        }
+      }
+      break;
+    case 'S':
+    case 'SPEED':
+      let speed = parseInt(parts?.[1]);
+      if (!isNaN(speed) && parts?.[2]) {
+        let flight = activeFlights.find(flight => flight.flightId == parts[2]);
+        if (flight) {
+          changeFlightSpeed(flight, speed);
+        }
+      }
+      break;
+    case 'TRAILENABLED':
+      switch (parts?.[1]) {
+        case 'TRUE':
+          toggleTrail(true);
+          break;
+        case 'FALSE':
+          toggleTrail(false);
+          break;
+      }
+      break;
+  }
+
+  document.querySelectorAll(".use-keyboard-input").forEach(input => input.value = '');
+
+};
 
 // Heading change test
 const testHeadingChange = () => changeFlightHeading(flights[1], 0);

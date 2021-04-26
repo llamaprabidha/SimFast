@@ -90,8 +90,10 @@ const Keyboard = {
                     keyElement.classList.add("keyboard__enter__key__color");
 
                     keyElement.addEventListener("click", () => {
-                        this.properties.value += "\n";
+                        parseCommand(document.getElementsByClassName('use-keyboard-input').item(0).value);
+                        this.properties.value += '\n';
                         this._triggerEvent("oninput");
+                        
                     });
 
                     break;
