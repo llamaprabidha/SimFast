@@ -249,9 +249,7 @@ const animate = flight => {
     },
     map: map
   });
-  flight.animprops.icon.addListener('click', () => {
-    displayFlightStrip(flight);
-  });
+  flight.animprops.icon.addListener('click', () => displayFlightStrip(flight));
 
   // Create plane trail
   flight.animprops.trails[0] = createTrail(start);
@@ -322,7 +320,7 @@ const tick = flight => {
 const removePlane = flight => {
 
   activeFlights.splice(activeFlights.indexOf(flight), 1);
-  removeFlightFromFlightsList(flight)
+  removeFlightFromFlightsList(flight);
 
   flight?.animprops?.icon?.setMap(null);
   flight?.animprops?.trails?.forEach(trail => trail?.setMap(null));
@@ -346,8 +344,9 @@ const removePlane = flight => {
 
 const knotsToMps = knots => knots * 0.514444;
 
-// Times with seconds ending in 0-4 return 0; times with seconds ending in 5-9 return 1
-const getDataBlockCycle = () => Math.ceil(new Date().getSeconds() / 5) % 2;
+// Creates a 2-second cycle
+// Returns 0 when current seconds % 4 = 0 or 1, returns 1 when current seconds % 4 = 2 or 2
+const getDataBlockCycle = () => Math.floor(new Date().getSeconds() % 4 / 2);
 
 const createDataBlock = flight => {
   let div = document.createElement('div');
@@ -512,20 +511,10 @@ const play = () => {
   if (activeFlights.length == 0) {
     // Starting
     startTimer();
-    // move();
-    animate(flights[0]);
-    animate(flights[1]);
-    animate(flights[2]);
-    animate(flights[3]);
-    animate(flights[4]);
-    animate(flights[5]);
-    animate(flights[6]);
-    animate(flights[7]);
-    animate(flights[8]);
-    animate(flights[9]);
-    animate(flights[10]);
-    animate(flights[11]);
-    flights?.[12] ? animate(flights[12]) : {};
+    // Flight starts after the time in seconds specified in the flights JSON has passed
+    // This isn't connected to the timer cycle yet, though.
+    // It only works properly at 1x speed w/o pausing.
+    flights.forEach(flight => setTimeout(() => animate(flight), flight.startTime * 1000));
   } else {
     pause(false);
   }
