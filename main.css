@@ -262,13 +262,13 @@ body {
 .popup-bubble {
   /* Position the bubble centred-above its parent. */
   position: absolute;
-  top: 0;
-  left: 0;
+  top: 6px;
+  left: 10px;
   transform: translate(-50%, -100%);
   /* Style the bubble. */
   /*background-color: rgba(0, 0, 0, 0.85);*/
   background-color: transparent;
-  text-align: left;
+  text-align: center;
   color: white;
   padding: 5px;
   border-radius: 5px;
@@ -283,8 +283,8 @@ body {
   /* Position the div a fixed distance above the tip. */
   position: absolute;
   width: 100%;
-  bottom: 16px;
-  left: 0;
+  bottom: 26px;
+  left: 10px;
 }
 
 /* This element draws the tip. */
@@ -294,14 +294,12 @@ body {
   top: 0;
   left: 0;
   /* Center the tip horizontally. */
-  transform: translate(-50%, 0);
+  transform: translate(-50%, 0) rotate(-45deg);
   /* The tip is a https://css-tricks.com/snippets/css/css-triangle/ */
-  width: 0;
-  height: 0;
+  width: 10px;
+  height: 10px;
   /* The tip is 8px high, and 12px wide. */
-  border-left: 3px solid transparent;
-  border-right: 3px solid transparent;
-  border-top: 4px solid rgba(255, 255, 255, 0.75);
+  border-bottom: 1px solid rgba(255, 255, 255, 1);
 }
 
 /* JavaScript will position this div at the bottom of the popup tip. */

@@ -24,41 +24,35 @@ function stopTimer() {
 }
 
 function timerSpeed(){
-  var selectedSpeed = document.getElementById("selectedSpeed").value;
-  
-   if (selectedSpeed == 1) {
-     playSpeed = 1000;
-     return;
-    }
-      else if (selectedSpeed == 2) {
-        playSpeed = 500;
-        return;
-    }
+  let selectedSpeed = document.getElementById("selectedSpeed").value;
+  playSpeed = 1000;
 
-      else if (selectedSpeed == 4) {
-        playSpeed = 250;
-        return;
-    }
-
-      else if (selectedSpeed == 8) {
-        playSpeed = 125;
-        return;
-     }
-
-      else if (selectedSpeed == 0.5) {
-        playSpeed = 2000;
-        return;
-     }
-
-      else if (selectedSpeed == 0.25) {
-         playSpeed = 4000;
-         return;
-     } 
-     
-     else if (selectedSpeed == 16) {
-        playSpeed = 62.5;
-        return;
-     }
+  switch (selectedSpeed) {
+    case '0.25':
+      playSpeed /= 0.25;
+      break;
+    case '0.5':
+      playSpeed /= 0.5;
+      break;
+    case '2':
+      playSpeed /= 2;
+      break;
+    case '4':
+      playSpeed /= 4;
+      break;
+    case '8':
+      playSpeed /= 8;
+      break;
+    case '16':
+      playSpeed /= 16;
+      break;
+    case '32':
+      playSpeed /= 32;
+      break;
+    case '64':
+      playSpeed /= 64;
+      break;
+  }
 }
 
 function timerCycle() {

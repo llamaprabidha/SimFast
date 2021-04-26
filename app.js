@@ -278,7 +278,7 @@ const tick = flight => {
   let location2 = flight.animprops.locations[flight.animprops.nextLocationIndex];
   let distance = google.maps.geometry.spherical.computeDistanceBetween(location1, location2);
 
-  flight.animprops.progress += knotsToMps(flight.groundspeed) / distance * simSpeed * 20;
+  flight.animprops.progress += knotsToMps(flight.groundspeed) / distance * simSpeed * 2;
   let nextPosition = google.maps.geometry.spherical.interpolate(location1, location2, flight.animprops.progress / 100);
 
   // Update icon
