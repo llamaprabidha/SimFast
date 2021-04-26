@@ -271,6 +271,7 @@ const animate = flight => {
 
 };
 
+// The flight loop
 const tick = flight => {
 
   // Calculate next position
@@ -278,7 +279,7 @@ const tick = flight => {
   let location2 = flight.animprops.locations[flight.animprops.nextLocationIndex];
   let distance = google.maps.geometry.spherical.computeDistanceBetween(location1, location2);
 
-  flight.animprops.progress += knotsToMps(flight.groundspeed) / distance * simSpeed * 2;
+  flight.animprops.progress += knotsToMps(flight.groundspeed) / distance * simSpeed;
   let nextPosition = google.maps.geometry.spherical.interpolate(location1, location2, flight.animprops.progress / 100);
 
   // Update icon
@@ -318,6 +319,7 @@ const tick = flight => {
 
 };
 
+// Removes plane from active simulation
 const removePlane = flight => {
 
   activeFlights.splice(activeFlights.indexOf(flight), 1);
@@ -339,29 +341,33 @@ const removePlane = flight => {
 
 /*
  *
- * UTILITY
+ * UTILITY FUNCTIONS
  * 
  */
 
+// Convert knots to meters per second
 const knotsToMps = knots => knots * 0.514444;
 
 // Creates a 2-second cycle
 // Returns 0 when current seconds % 4 = 0 or 1, returns 1 when current seconds % 4 = 2 or 2
 const getDataBlockCycle = () => Math.floor(new Date().getSeconds() % 4 / 2);
 
+// Convert number of seconds into string of format HH:MM:SS
 const secondsToTimeString = seconds => new Date(seconds * 1000).toISOString().substr(11, 8);
 
+// Creates data block div
 const createDataBlock = flight => {
   let div = document.createElement('div');
   div.innerHTML = getDataBlockString(flight, getDataBlockString());
   return div;
 };
 
+// Returns string to display on the data block for the current cycle
 const getDataBlockString = (flight, cycle) => {
   let data;
   switch (cycle) {
     case 0:
-      data = flight.flightId + '<br>' + (flight.altitude / 100) + '  ' + flight.groundspeed + 'PF';
+      data = flight.flightId + '<br> 0' + (flight.altitude / 100) + '&nbsp;&nbsp;&nbsp;&nbsp;' + (flight.groundspeed / 10); // + 'PF';
       break;
     case 1:
       data = flight.flightId + '<br>' + flight.destination.name + '  ' + flight.aircraftType;
@@ -370,6 +376,7 @@ const getDataBlockString = (flight, cycle) => {
   return data;
 };
 
+// Returns the string to display on the flights list 
 const getFlightsListString = flight => {
   let distance = Math.round(google.maps.geometry.spherical.computeLength(flight.animprops.locations) / 1000) + ' km';
   let distanceDigits = distance.toString().length;
@@ -424,6 +431,13 @@ const getFlightsListString = flight => {
         + flight.destination.name;
 };
 
+// Update the display string for an existing flight on the flights list
+const updateFlightOnFlightsList = flight => {
+  let option = document.getElementById(flight.flightId);
+  option?.innerHTML ? option.innerHTML = getFlightsListString(flight) : {};
+}
+
+// Initializes flights from provided path
 const initFlights = async path => {
   flights = [];
   await fetch(path)
@@ -462,6 +476,8 @@ const initFlights = async path => {
 
 }
 
+// Adds midpoint to an active flight at a given index in the flight path
+// Can also delete the original next point after the specified index to "swap" points
 const addMidpoint = (flight, location, index, deleteNext = false) => {
   if (index == flight.animprops.nextLocationIndex) {
     let current = flight.animprops.dataBlock.position;
@@ -477,6 +493,8 @@ const addMidpoint = (flight, location, index, deleteNext = false) => {
   }
 };
 
+
+// Creates dotted trail polyline for flight
 const createTrail = location => {
   return new google.maps.Polyline({
     path: [location, location],
@@ -501,6 +519,7 @@ const createTrail = location => {
  * 
  */ 
 
+// Initializes the flights list
 const initFlightsList = () => {
   let flightsList = document.getElementById('flights');
   let numFlights = flightsList.options.length;
@@ -510,6 +529,7 @@ const initFlightsList = () => {
   flights.forEach(flight => addFlightToFlightsList(flight));
 };
 
+// Adds a flight to the flights list
 const addFlightToFlightsList = flight => {
   let option = document.createElement('option');
   option.id = flight.flightId;
@@ -520,8 +540,11 @@ const addFlightToFlightsList = flight => {
   document.getElementById('flights').add(option);
 };
 
+// Removes a flight from the flights list
 const removeFlightFromFlightsList = flight => document.getElementById(flight.flightId)?.remove();
 
+// Displays a flight strip on the screen
+// Currently uses images but should ideally generate programatically
 const displayFlightStrip = flight => {
   let flightStripContainer = document.getElementById('image-container');
   if (flight) {
@@ -540,16 +563,13 @@ const displayFlightStrip = flight => {
  * 
  */
 
-const updateFlightOnFlightsList = flight => {
-  let option = document.getElementById(flight.flightId);
-  option?.innerHTML ? option.innerHTML = getFlightsListString(flight) : {};
-}
-
+// Update a flight's speed
 const changeFlightSpeed = (flight, speed) => {
   flight.groundspeed = speed;
   updateFlightOnFlightsList(flight);
 }
 
+// Update a flight's altitude
 const changeFlightAltitude = (flight, altitude) => flight.altitude = altitude;
 
 // Travels in the new direction the remaining distance to the original next location 
@@ -561,6 +581,17 @@ const changeFlightHeading = (flight, direction) => {
   addMidpoint(flight, newPosition, nextLocationIndex, true);
 };
 
+// Enables or disables trail visibility
+const toggleTrail = state => {
+  activeFlights.forEach(flight => {
+    flight?.animprops?.trails?.forEach(trail => {
+      state ? trail?.setMap(map) : trail?.setMap(null);
+    })
+  });
+  trailEnabled = state;
+}
+
+// Parses on-screen keyboard command
 const parseCommand = command => {
 
   let parts = command.split(/(\s+)/).filter( e => e.trim().length > 0);
@@ -618,6 +649,7 @@ const parseCommand = command => {
  *
  */
 
+// Starts simulation or unpauses
 const play = () => {
   if (activeFlights.length == 0) {
     // StopwatchApp.js will handle starting flight animations
@@ -628,6 +660,7 @@ const play = () => {
   }
 };
 
+// Pauses simulation
 const pause = (state) => {
   if (state) {
     simSpeed = 0;
@@ -641,6 +674,7 @@ const pause = (state) => {
   }
 };
 
+// Resets simulation
 const reset = () => {
   startTimes = {};
   resetTimer();
@@ -652,6 +686,7 @@ const reset = () => {
   console.log(startTimes);
 }
 
+// Changes the simulation speed
 const changeSpeed = () => {
   let speed = document.getElementById('selectedSpeed').value;
   if (!isNaN(speed)) {
@@ -662,21 +697,12 @@ const changeSpeed = () => {
   }
 };
 
-const toggleTrail = state => {
-  activeFlights.forEach(flight => {
-    flight?.animprops?.trails?.forEach(trail => {
-      state ? trail?.setMap(map) : trail?.setMap(null);
-    })
-  });
-  trailEnabled = state;
-}
-
 /*
  *
  * CALLBACK
  *
  */
-
+// Google Maps API callback
 async function initMap() {
   map = new google.maps.Map(document.getElementById('map'), params);
 

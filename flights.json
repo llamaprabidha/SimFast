@@ -3,7 +3,7 @@
         "flightId": "N536SP",
         "aircraftType": "C172", 
         "altitude": 2600,
-        "groundspeed": 110,
+        "groundspeed": 220,
         "startTime": 10,
         "origin": {
             "name": "PHL",
@@ -18,7 +18,7 @@
     },
     {
         "flightId": "X536SP",
-        "aircraftType": "C172",
+        "aircraftType": "BE20",
         "altitude": 2600,
         "groundspeed": 110,
         "startTime": 0,
@@ -42,9 +42,9 @@
     },
     {
         "flightId": "F536SV",
-        "aircraftType": "C172", 
+        "aircraftType": "B752", 
         "altitude": 2600,
-        "groundspeed": 110,
+        "groundspeed": 220,
         "startTime": 180,
         "origin": {
             "name": "MIA",
@@ -68,7 +68,7 @@
         "flightId": "R536SI",
         "aircraftType": "C172", 
         "altitude": 2600,
-        "groundspeed": 110,
+        "groundspeed": 200,
         "startTime": 0,
         "origin": {
             "name": "ATL",
@@ -83,7 +83,7 @@
     },
     {
         "flightId": "J536SL",
-        "aircraftType": "C172", 
+        "aircraftType": "B763", 
         "altitude": 2600,
         "groundspeed": 200,
         "startTime": 0,
@@ -102,7 +102,7 @@
         "flightId": "L536TP",
         "aircraftType": "C172", 
         "altitude": 2600,
-        "groundspeed": 110,
+        "groundspeed": 260,
         "startTime": 0,
         "origin": {
             "name": "AZO",
@@ -117,9 +117,9 @@
     },
     {
         "flightId": "S536I0",
-        "aircraftType": "C172", 
+        "aircraftType": "BE20", 
         "altitude": 2600,
-        "groundspeed": 110,
+        "groundspeed": 180,
         "startTime": 0,
         "origin": {
             "name": "CVG",
@@ -134,9 +134,9 @@
     },
     {
         "flightId": "I536PG",
-        "aircraftType": "C172", 
+        "aircraftType": "C421", 
         "altitude": 2600,
-        "groundspeed": 110,
+        "groundspeed": 270,
         "startTime": 0,
         "origin": {
             "name": "CLT",
@@ -153,7 +153,7 @@
         "flightId": "O536YU",
         "aircraftType": "C172", 
         "altitude": 2600,
-        "groundspeed": 110,
+        "groundspeed": 220,
         "startTime": 0,
         "origin": {
             "name": "CLE",
@@ -162,8 +162,8 @@
         },
         "destination": {
             "name": "PHL",
-            "lat": 40.6413,
-            "long": -73.7781
+            "lat": 39.8729,
+            "long": -75.2437
         }
     },
     {
@@ -185,7 +185,7 @@
     },
     {
         "flightId": "W536MI",
-        "aircraftType": "C172", 
+        "aircraftType": "B752", 
         "altitude": 2600,
         "groundspeed": 180,
         "startTime": 0,
