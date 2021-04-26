@@ -9,6 +9,8 @@ body {
 .list-style {
   width: 780px;
   font-family: "Courier New", Courier, monospace;
+  overflow-x: auto;
+  overflow-y: auto;
 }
 
 /* Map Style */
