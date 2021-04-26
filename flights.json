@@ -6,7 +6,7 @@
         "groundspeed": 110,
         "startTime": 10,
         "origin": {
-            "name": " PHL",
+            "name": "PHL",
             "lat": 39.8729,
             "long": -75.2437
         },
@@ -23,7 +23,7 @@
         "groundspeed": 110,
         "startTime": 0,
         "origin": {
-            "name": " MDT", 
+            "name": "MDT", 
             "lat": 40.1942,
             "long": -76.7577
         },
@@ -45,7 +45,7 @@
         "aircraftType": "C172", 
         "altitude": 2600,
         "groundspeed": 110,
-        "startTime": 0,
+        "startTime": 180,
         "origin": {
             "name": "MIA",
             "lat": 25.7951,
@@ -105,7 +105,7 @@
         "groundspeed": 110,
         "startTime": 0,
         "origin": {
-            "name": " AZO",
+            "name": "AZO",
             "lat": 42.2403,
             "long": -85.5556
         },
@@ -122,7 +122,7 @@
         "groundspeed": 110,
         "startTime": 0,
         "origin": {
-            "name": " CVG",
+            "name": "CVG",
             "lat": 39.0533,
             "long": -84.6630
         },
@@ -139,7 +139,7 @@
         "groundspeed": 110,
         "startTime": 0,
         "origin": {
-            "name": " CLT",
+            "name": "CLT",
             "lat": 35.2271,
             "long": -80.8431
         },
@@ -156,7 +156,7 @@
         "groundspeed": 110,
         "startTime": 0,
         "origin": {
-            "name": " CLE",
+            "name": "CLE",
             "lat": 41.4058,
             "long": -81.8539
         },

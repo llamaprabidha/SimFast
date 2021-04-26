@@ -62,7 +62,7 @@ function timerSpeed(){
 }
 
 function timerCycle() {
-    if (stoptime == false) {
+  if (stoptime == false) {
     sec = parseInt(sec);
     min = parseInt(min);
     hr = parseInt(hr);
@@ -89,7 +89,11 @@ function timerCycle() {
       hr = '0' + hr;
     }
 
-    timer.innerHTML = hr + ':' + min + ':' + sec;
+    let timeString = hr + ':' + min + ':' + sec;
+    timer.innerHTML = timeString;
+    
+    // Start flights that are scheduled to start at the current time
+    startTimes?.[timeString]?.forEach(index => setTimeout(() => animate(flights[index]), 0));
 
     setTimeout("timerCycle()", playSpeed);
   }

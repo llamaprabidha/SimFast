@@ -91,7 +91,7 @@ const Keyboard = {
 
                     keyElement.addEventListener("click", () => {
                         parseCommand(document.getElementsByClassName('use-keyboard-input').item(0).value);
-                        this.properties.value += '\n';
+                        this.properties.value = '';
                         this._triggerEvent("oninput");
                         
                     });

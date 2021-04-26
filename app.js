@@ -4,6 +4,7 @@ pauseState = false,
 simSpeed = 1,
 flights = [],
 activeFlights = [],
+startTimes = {},
 Popup;
 
 // Parameters that control the map
@@ -19,210 +20,210 @@ const params = {
   zoom: 9,
   styles: [
     {
-      "elementType": "geometry",
-      "stylers": [
+      'elementType': 'geometry',
+      'stylers': [
         {
-          "color": "#212121"
+          'color': '#212121'
         }
       ]
     },
     {
-      "elementType": "labels",
-      "stylers": [
+      'elementType': 'labels',
+      'stylers': [
         {
-          "visibility": "off"
+          'visibility': 'off'
         }
       ]
     },
     {
-      "elementType": "labels.icon",
-      "stylers": [
+      'elementType': 'labels.icon',
+      'stylers': [
         {
-          "visibility": "off"
+          'visibility': 'off'
         }
       ]
     },
     {
-      "elementType": "labels.text.fill",
-      "stylers": [
+      'elementType': 'labels.text.fill',
+      'stylers': [
         {
-          "color": "#757575"
+          'color': '#757575'
         }
       ]
     },
     {
-      "elementType": "labels.text.stroke",
-      "stylers": [
+      'elementType': 'labels.text.stroke',
+      'stylers': [
         {
-          "color": "#212121"
+          'color': '#212121'
         }
       ]
     },
     {
-      "featureType": "administrative",
-      "elementType": "geometry",
-      "stylers": [
+      'featureType': 'administrative',
+      'elementType': 'geometry',
+      'stylers': [
         {
-          "color": "#757575"
+          'color': '#757575'
         }
       ]
     },
     {
-      "featureType": "administrative.country",
-      "elementType": "labels.text.fill",
-      "stylers": [
+      'featureType': 'administrative.country',
+      'elementType': 'labels.text.fill',
+      'stylers': [
         {
-          "color": "#9e9e9e"
+          'color': '#9e9e9e'
         }
       ]
     },
     {
-      "featureType": "administrative.land_parcel",
-      "stylers": [
+      'featureType': 'administrative.land_parcel',
+      'stylers': [
         {
-          "visibility": "off"
+          'visibility': 'off'
         }
       ]
     },
     {
-      "featureType": "administrative.locality",
-      "elementType": "labels.text.fill",
-      "stylers": [
+      'featureType': 'administrative.locality',
+      'elementType': 'labels.text.fill',
+      'stylers': [
         {
-          "color": "#bdbdbd"
+          'color': '#bdbdbd'
         }
       ]
     },
     {
-      "featureType": "administrative.neighborhood",
-      "stylers": [
+      'featureType': 'administrative.neighborhood',
+      'stylers': [
         {
-          "visibility": "off"
+          'visibility': 'off'
         }
       ]
     },
     {
-      "featureType": "poi",
-      "elementType": "labels.text.fill",
-      "stylers": [
+      'featureType': 'poi',
+      'elementType': 'labels.text.fill',
+      'stylers': [
         {
-          "color": "#757575"
+          'color': '#757575'
         }
       ]
     },
     {
-      "featureType": "poi.park",
-      "elementType": "geometry",
-      "stylers": [
+      'featureType': 'poi.park',
+      'elementType': 'geometry',
+      'stylers': [
         {
-          "color": "#181818"
+          'color': '#181818'
         }
       ]
     },
     {
-      "featureType": "poi.park",
-      "elementType": "labels.text.fill",
-      "stylers": [
+      'featureType': 'poi.park',
+      'elementType': 'labels.text.fill',
+      'stylers': [
         {
-          "color": "#616161"
+          'color': '#616161'
         }
       ]
     },
     {
-      "featureType": "poi.park",
-      "elementType": "labels.text.stroke",
-      "stylers": [
+      'featureType': 'poi.park',
+      'elementType': 'labels.text.stroke',
+      'stylers': [
         {
-          "color": "#1b1b1b"
+          'color': '#1b1b1b'
         }
       ]
     },
     {
-      "featureType": "road",
-      "stylers": [
+      'featureType': 'road',
+      'stylers': [
         {
-          "visibility": "off"
+          'visibility': 'off'
         }
       ]
     },
     {
-      "featureType": "road",
-      "elementType": "geometry.fill",
-      "stylers": [
+      'featureType': 'road',
+      'elementType': 'geometry.fill',
+      'stylers': [
         {
-          "color": "#2c2c2c"
+          'color': '#2c2c2c'
         }
       ]
     },
     {
-      "featureType": "road",
-      "elementType": "labels.text.fill",
-      "stylers": [
+      'featureType': 'road',
+      'elementType': 'labels.text.fill',
+      'stylers': [
         {
-          "color": "#8a8a8a"
+          'color': '#8a8a8a'
         }
       ]
     },
     {
-      "featureType": "road.arterial",
-      "elementType": "geometry",
-      "stylers": [
+      'featureType': 'road.arterial',
+      'elementType': 'geometry',
+      'stylers': [
         {
-          "color": "#373737"
+          'color': '#373737'
         }
       ]
     },
     {
-      "featureType": "road.highway",
-      "elementType": "geometry",
-      "stylers": [
+      'featureType': 'road.highway',
+      'elementType': 'geometry',
+      'stylers': [
         {
-          "color": "#3c3c3c"
+          'color': '#3c3c3c'
         }
       ]
     },
     {
-      "featureType": "road.highway.controlled_access",
-      "elementType": "geometry",
-      "stylers": [
+      'featureType': 'road.highway.controlled_access',
+      'elementType': 'geometry',
+      'stylers': [
         {
-          "color": "#4e4e4e"
+          'color': '#4e4e4e'
         }
       ]
     },
     {
-      "featureType": "road.local",
-      "elementType": "labels.text.fill",
-      "stylers": [
+      'featureType': 'road.local',
+      'elementType': 'labels.text.fill',
+      'stylers': [
         {
-          "color": "#616161"
+          'color': '#616161'
         }
       ]
     },
     {
-      "featureType": "transit",
-      "elementType": "labels.text.fill",
-      "stylers": [
+      'featureType': 'transit',
+      'elementType': 'labels.text.fill',
+      'stylers': [
         {
-          "color": "#757575"
+          'color': '#757575'
         }
       ]
     },
     {
-      "featureType": "water",
-      "elementType": "geometry",
-      "stylers": [
+      'featureType': 'water',
+      'elementType': 'geometry',
+      'stylers': [
         {
-          "color": "#000000"
+          'color': '#000000'
         }
       ]
     },
     {
-      "featureType": "water",
-      "elementType": "labels.text.fill",
-      "stylers": [
+      'featureType': 'water',
+      'elementType': 'labels.text.fill',
+      'stylers': [
         {
-          "color": "#3d3d3d"
+          'color': '#3d3d3d'
         }
       ]
     }
@@ -348,6 +349,8 @@ const knotsToMps = knots => knots * 0.514444;
 // Returns 0 when current seconds % 4 = 0 or 1, returns 1 when current seconds % 4 = 2 or 2
 const getDataBlockCycle = () => Math.floor(new Date().getSeconds() % 4 / 2);
 
+const secondsToTimeString = seconds => new Date(seconds * 1000).toISOString().substr(11, 8);
+
 const createDataBlock = flight => {
   let div = document.createElement('div');
   div.innerHTML = getDataBlockString(flight, getDataBlockString());
@@ -369,8 +372,56 @@ const getDataBlockString = (flight, cycle) => {
 
 const getFlightsListString = flight => {
   let distance = Math.round(google.maps.geometry.spherical.computeLength(flight.animprops.locations) / 1000) + ' km';
-  return flight.flightId + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + distance + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'
-        + flight.origin.name + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp&nbsp&nbsp&nbsp&nbsp;' + flight.destination.name;
+  let distanceDigits = distance.toString().length;
+  let distanceSpacing = '';
+  switch (distanceDigits) {
+    // Out of order for performance benefit...maybe?
+    case 3+3:
+      distanceSpacing = '&nbsp;&nbsp;';
+      break;
+    case 4+3:
+      distanceSpacing = '&nbsp;';
+      break;
+    case 2+3:
+      distanceSpacing = '&nbsp;&nbsp;&nbsp;';
+      break;
+    case 1+3:
+      distanceSpacing = '&nbsp;&nbsp;&nbsp;&nbsp;';
+      break;
+    case 5+3:
+      break;
+    default:
+      distanceSpacing = '&nbsp;&nbsp;'; // whatever, we don't care at this point
+  }
+  let speed = flight.groundspeed + ' kt';
+  let speedDigits = speed.toString().length;
+  let speedSpacing = '';
+  switch (speedDigits) {
+    // Out of order for performance benefit...maybe?
+    case 3+3:
+      speedSpacing = '&nbsp;&nbsp;';
+      break;
+    case 4+3:
+      speedSpacing = '&nbsp;';
+      break;
+    case 2+3:
+      speedSpacing = '&nbsp;&nbsp;&nbsp;';
+      break;
+    case 1+3:
+      speedSpacing = '&nbsp;&nbsp;&nbsp;&nbsp;';
+      break;
+    case 5+3:
+      break;
+    default:
+      speedSpacing = ''; // whatever, we don't care at this point
+  }
+  return flight.flightId + '&nbsp;&nbsp;&nbsp;&nbsp;'
+        + flight.aircraftType + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'
+        + distance + '&nbsp;&nbsp;&nbsp;' + distanceSpacing
+        + flight.groundspeed + ' kt&nbsp;&nbsp;&nbsp;' + speedSpacing
+        + secondsToTimeString(flight.startTime) + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' 
+        + flight.origin.name + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' 
+        + flight.destination.name;
 };
 
 const initFlights = async path => {
@@ -401,6 +452,14 @@ const initFlights = async path => {
       return response;
     })
     .then(response => flights = response);
+
+    // Set up start times array
+    for (let i = 0; i < flights.length; i++) {
+      let timeString = secondsToTimeString(flights[i].startTime);
+      startTimes[timeString] ? {} : startTimes[timeString] = [];
+      startTimes[timeString].push(i);
+    }
+
 }
 
 const addMidpoint = (flight, location, index, deleteNext = false) => {
@@ -481,9 +540,15 @@ const displayFlightStrip = flight => {
  * 
  */
 
-const updateFlightOnFlightsList = flight => document.getElementById(flight.flightId).innerHTML = getFlightsListString(flight);
+const updateFlightOnFlightsList = flight => {
+  let option = document.getElementById(flight.flightId);
+  option?.innerHTML ? option.innerHTML = getFlightsListString(flight) : {};
+}
 
-const changeFlightSpeed = (flight, speed) => flight.groundspeed = speed;
+const changeFlightSpeed = (flight, speed) => {
+  flight.groundspeed = speed;
+  updateFlightOnFlightsList(flight);
+}
 
 const changeFlightAltitude = (flight, altitude) => flight.altitude = altitude;
 
@@ -543,13 +608,9 @@ const parseCommand = command => {
       break;
   }
 
-  document.querySelectorAll(".use-keyboard-input").forEach(input => input.value = '');
+  document.querySelectorAll('.use-keyboard-input').forEach(input => input.value = '');
 
 };
-
-// Heading change test
-const testHeadingChange = () => changeFlightHeading(flights[1], 0);
-
 
 /*
  *
@@ -559,12 +620,9 @@ const testHeadingChange = () => changeFlightHeading(flights[1], 0);
 
 const play = () => {
   if (activeFlights.length == 0) {
-    // Starting
+    // StopwatchApp.js will handle starting flight animations
+    pause(false);
     startTimer();
-    // Flight starts after the time in seconds specified in the flights JSON has passed
-    // This isn't connected to the timer cycle yet, though.
-    // It only works properly at 1x speed w/o pausing.
-    flights.forEach(flight => setTimeout(() => animate(flight), flight.startTime * 1000));
   } else {
     pause(false);
   }
@@ -584,17 +642,18 @@ const pause = (state) => {
 };
 
 const reset = () => {
+  startTimes = {};
+  resetTimer();
   initFlights('flights.json').then(response => {
     initFlightsList();
     displayFlightStrip(null);
     [...activeFlights].forEach(e => removePlane(e)); // shallow copy
-    pause(false);
-    resetTimer();
   });
+  console.log(startTimes);
 }
 
 const changeSpeed = () => {
-  let speed = document.getElementById("selectedSpeed").value;
+  let speed = document.getElementById('selectedSpeed').value;
   if (!isNaN(speed)) {
     simSpeed = speed;
   } else {
@@ -619,7 +678,7 @@ const toggleTrail = state => {
  */
 
 async function initMap() {
-  map = new google.maps.Map(document.getElementById("map"), params);
+  map = new google.maps.Map(document.getElementById('map'), params);
 
   /**
    * A customized popup on the map.
@@ -630,14 +689,14 @@ async function initMap() {
       this.position = position;
       this.flight = flight;
       this.onScreen = false;
-      content.classList.add("popup-bubble");
+      content.classList.add('popup-bubble');
       // This zero-height div is positioned at the bottom of the bubble.
-      const bubbleAnchor = document.createElement("div");
-      bubbleAnchor.classList.add("popup-bubble-anchor");
+      const bubbleAnchor = document.createElement('div');
+      bubbleAnchor.classList.add('popup-bubble-anchor');
       bubbleAnchor.appendChild(content);
       // This zero-height div is positioned at the bottom of the tip.
-      this.containerDiv = document.createElement("div");
-      this.containerDiv.classList.add("popup-container");
+      this.containerDiv = document.createElement('div');
+      this.containerDiv.classList.add('popup-container');
       this.containerDiv.appendChild(bubbleAnchor);
       // Optionally stop clicks, etc., from bubbling up to the map.
       Popup.preventMapHitsAndGesturesFrom(this.containerDiv);
@@ -661,12 +720,12 @@ async function initMap() {
         // Hide the popup when it is far out of view.
         const display =
           Math.abs(divPosition.x) < 4000 && Math.abs(divPosition.y) < 4000
-            ? "block"
-            : "none";
+            ? 'block'
+            : 'none';
 
-        if (display === "block") {
-          this.containerDiv.style.left = divPosition.x + "px";
-          this.containerDiv.style.top = divPosition.y + "px";
+        if (display === 'block') {
+          this.containerDiv.style.left = divPosition.x + 'px';
+          this.containerDiv.style.top = divPosition.y + 'px';
         }
 
         if (this.containerDiv.style.display !== display) {
