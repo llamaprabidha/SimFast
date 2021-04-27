@@ -83,7 +83,7 @@ There are four implemented keyboard commands. These change a flight's heading, a
 
 Both of these function the same. Headings are expressed in degrees clockwise from North, per Google Maps API. That is, 0 is north, 90 or -270 is east, 180 or -180 is south, and 270 or -45 is west.
 
-Example: `H 90 N536SP` will make NF36SP flight straight east.
+Example: `H 90 N536SP` will make NF36SP fly straight east.
 
 ### Change Altitude
  - A [*altitude*] [*id*]
